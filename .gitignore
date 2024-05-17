@@ -17,3 +17,8 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/vendor
+/tests
+/config
+/bootstrap
+*.env
