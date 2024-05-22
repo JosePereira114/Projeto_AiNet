@@ -22,3 +22,4 @@ yarn-error.log
 /config
 /bootstrap
 *.env
+composer.lock
