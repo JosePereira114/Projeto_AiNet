@@ -22,6 +22,11 @@ class MovieController extends Controller
         $movies = Movie::all();
         return view('movies.showcase',['movies' => $movies]);
     }
+    public function showMoment(): View
+    {
+        $movies = Movie::all();
+        return view('movies.showmoment',['movies' => $movies]);
+    }
     /**
      * Show the form for creating a new resource.
      */

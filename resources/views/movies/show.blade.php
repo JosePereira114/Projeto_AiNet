@@ -18,6 +18,11 @@
                 <div class="mt-6 space-y-4">
                     @include('movies.shared.fields', ['mode' => 'show'])
                 </div>
+                <header>
+                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                        Screening"{{ $movie->screening }}"
+                    </h2>
+                </header>
             </section>
         </div>
     </div>
