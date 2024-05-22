@@ -54,7 +54,11 @@ class ScreaningController extends Controller
         return view('screenings.show')
             ->with('screening', $screening);
     }
-
+    public function showMoment($movieId): View
+    {
+        $screenings = Screening::where('movie_id', $movieId)->get();
+        return view('movies.showmoment', ['screenings' => $screenings]);
+    }
     /**
      * Show the form for editing the specified resource.
      */

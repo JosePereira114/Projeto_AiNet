@@ -19,6 +19,7 @@ Route::view('/', 'home')->name('home');
 Route::get('courses/showcase', [CourseController::class, 'showCase'])->name('courses.showcase');
 Route::get('courses/{course}/curriculum', [CourseController::class, 'showCurriculum'])->name('courses.curriculum');
 Route::get('movies/showcase', [MovieController::class, 'showCase'])->name('movies.showcase');
+Route::get('movies/{movie}/scrrening', [MovieController::class, 'showScreening'])->name('movies.screening');
 /* ----- Non-Verified users ----- */
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

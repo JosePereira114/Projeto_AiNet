@@ -24,7 +24,7 @@ class MovieController extends Controller
     }
     public function showMoment(): View
     {
-        $movies = Movie::all();
+        $movies = Movie::whereHas('scrrening')->get();
         return view('movies.showmoment',['movies' => $movies]);
     }
     /**
@@ -56,6 +56,10 @@ class MovieController extends Controller
     public function show(Movie $movie):View
     {
         return view('movies.show')->with('movie', $movie);
+    }
+    public function showScreening(Movie $movie):View
+    {
+        return view('movies.screening')->with('movie', $movie);
     }
 
     /**

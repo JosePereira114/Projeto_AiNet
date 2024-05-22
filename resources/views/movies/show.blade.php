@@ -20,9 +20,13 @@
                 </div>
                 <header>
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Screening"{{ $movie->screening }}"
+                        Screening"{{ $movie->id }}"
                     </h2>
                 </header>
+                <x-movies.screening :screenings="$movie->screening"
+                    :showView="true"
+                    class="pt-4"
+                    />
             </section>
         </div>
     </div>
