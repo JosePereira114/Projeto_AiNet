@@ -6,23 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-class Seat extends Model
+class Screening extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     protected $fillable=[
-        'row',
-        'seat_number',
+        'start_time',
+        'end_time',
+        'movie_id',
+        'theater_id',
         'custom',
     ];
-    public $timestamps = false;
-    public function ticket():HasMany{
+    public function tickets():HasMany{
         return $this->hasMany(Ticket::class);
     }
     public function theater():BelongsTo{
         return $this->belongsTo(Theater::class)->withTrashed();
+    }
+    public function movie():BelongsTo{
+        return $this->belongsTo(Movie::class)->withTrashed();
     }
 }

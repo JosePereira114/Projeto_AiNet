@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Screaning;
+use App\Models\Screening;
 use Illuminate\Http\Request;
 
 class ScreaningController extends Controller
@@ -34,7 +34,7 @@ class ScreaningController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Screaning $screaning)
+    public function show(Screening $screaning)
     {
         //
     }
@@ -42,7 +42,7 @@ class ScreaningController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Screaning $screaning)
+    public function edit(Screening $screaning)
     {
         //
     }
@@ -50,7 +50,7 @@ class ScreaningController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Screaning $screaning)
+    public function update(Request $request, Screening $screaning)
     {
         //
     }
@@ -58,7 +58,7 @@ class ScreaningController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Screaning $screaning)
+    public function destroy(Screening $screaning)
     {
         //
     }
