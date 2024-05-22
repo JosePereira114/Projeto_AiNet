@@ -14,6 +14,7 @@ class FilterCard extends Component
 
     public function __construct(
         public array $courses,
+        public array $movies,
         public string $filterAction,
         public string $resetUrl,
         public ?string $course = null,

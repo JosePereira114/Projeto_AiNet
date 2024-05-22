@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>CineProject</title>
+    <title>Department of Computer Engineering</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -38,7 +38,9 @@
 
                         <!-- Menu Item: Curricula -->
                         <x-menus.submenu-full-width content="Curricula" selectable="1" selected="0" uniqueName="submenu_curricula">
-                          
+                            <!--@foreach ($courses as $course)
+                            <x-menus.submenu-item :content="$course->fullName" selectable="1" selected="0" href="{{ route('courses.curriculum', ['course' => $course]) }}" />
+                            @endforeach-->
                         </x-menus.submenu-full-width>
 
                         <!-- Menu Item: Disciplines -->
@@ -122,7 +124,7 @@
         <header class="bg-white dark:bg-gray-900 shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <h4 class="mb-1 text-base text-gray-500 dark:text-gray-400 leading-tight">
-                    Cinema
+                    Department of Computer Engineering
                 </h4>
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                     @yield('header-title')

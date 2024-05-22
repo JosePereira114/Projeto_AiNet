@@ -43,8 +43,8 @@ class Movie extends Model
         return $this->belongsTo(Genre::class, 'id', 'id');
     }
 
-    public function Screaning(): HasMany
+    public function screening(): HasMany
     {
-        return $this->hasMany(Screaning::class, 'id', 'id');
+        return $this->hasMany(Screening::class, 'id', 'id');
     }
 }
