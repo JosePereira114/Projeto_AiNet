@@ -34,14 +34,17 @@ class Discipline extends Model
             default => '?'
         };
     }
+
     public function courseRef(): BelongsTo
     {
         return $this->belongsTo(Course::class, 'course', 'abbreviation');
     }
+
     public function teachers(): BelongsToMany
     {
         return $this->belongsToMany(Teacher::class, 'teachers_disciplines');
     }
+
     public function students(): BelongsToMany
     {
         return $this->belongsToMany(

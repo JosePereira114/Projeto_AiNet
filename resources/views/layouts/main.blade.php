@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>CineProject</title>
+    <title>Department of Computer Engineering</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -33,64 +33,86 @@
                     <!-- Menu Items -->
                     <div id="menu-container" class="grow flex flex-col sm:flex-row items-stretch
                     invisible h-0 sm:visible sm:h-auto">
-                        <!-- Menu Item: Filmes -->
-                        <x-menus.menu-item
-                            content="Filmes"
-                            href="#"
-                            selected="#"
-                        />
+                        <!-- Menu Item: Courses -->
+                        <x-menus.menu-item content="Courses" href="{{ route('courses.showcase') }}" selected="{{ Route::currentRouteName() == 'courses.showcase'}}" />
+
+                        <!-- Menu Item: Curricula -->
+                        <x-menus.submenu-full-width content="Curricula" selectable="1" selected="0" uniqueName="submenu_curricula">
+                            @foreach ($courses as $course)
+                            <x-menus.submenu-item :content="$course->fullName" selectable="1" selected="0" href="{{ route('courses.curriculum', ['course' => $course]) }}" />
+                            @endforeach
+                        </x-menus.submenu-full-width>
+
+                        <!-- Menu Item: Disciplines -->
+                        <x-menus.menu-item content="Disciplines" selectable="1" href="{{ route('disciplines.index') }}" selected="{{ Route::currentRouteName() == 'disciplines.index'}}" />
+
+                        @auth
+                        <!-- Menu Item: Teachers -->
+                        <x-menus.menu-item content="Teachers" selectable="1" href="{{ route('teachers.index') }}" selected="{{ Route::currentRouteName() == 'teachers.index'}}" />
+
+                        <!-- Menu Item: Others -->
+                        <x-menus.submenu selectable="0" uniqueName="submenu_others" content="More">
+                            @can('viewAny', App\Models\Student::class)
+                            <x-menus.submenu-item content="Students" selectable="0" href="{{ route('students.index') }}" />
+                            @endcan
+                            <x-menus.submenu-item content="Administratives" selectable="0" href="{{ route('administratives.index') }}" />
+                            <hr>
+                            <x-menus.submenu-item content="Departments" selectable="0" href="{{ route('departments.index') }}" />
+                            <x-menus.submenu-item content="Course Management" href="{{ route('courses.index') }}" />
+                        </x-menus.submenu>
+                        @endauth
 
                         <div class="grow"></div>
 
                         <!-- Menu Item: Cart -->
-                        <x-menus.cart
-                            href="#"
-                            selectable="0"
-                            selected="1"
-                            total="2"/>
+                        @if (session('cart'))
+                        <x-menus.cart :href="route('cart.show')" selectable="1" selected="{{ Route::currentRouteName() == 'cart.show'}}" :total="session('cart')->count()" />
+                        @endif
 
-                        <x-menus.submenu
-                            selectable="0"
-                            uniqueName="submenu_user"
-                            >
+                        @auth
+                        <x-menus.submenu selectable="0" uniqueName="submenu_user">
                             <x-slot:content>
                                 <div class="pe-1">
-                                    <img src="{{ Vite::asset('resources/img/photos/photo_example.jpeg') }}" class="w-11 h-11 min-w-11 min-h-11 rounded-full">
+                                    <img src="{{ Auth::user()->photoFullUrl}}" class="w-11 h-11 min-w-11 min-h-11 rounded-full">
                                 </div>
                                 {{-- ATENÇÃO - ALTERAR FORMULA DE CALCULO DAS LARGURAS MÁXIMAS QUANDO O MENU FOR ALTERADO --}}
                                 <div class="ps-1 sm:max-w-[calc(100vw-39rem)] md:max-w-[calc(100vw-41rem)] lg:max-w-[calc(100vw-46rem)] xl:max-w-[34rem] truncate">
-                                    João Miguel da Silva Pereira Antunes
+                                    {{ Auth::user()->name }}
                                 </div>
-                            </x-slot>
-                            <x-menus.submenu-item
-                                content="Minhas Compras no cinema"
-                                selectable="0"
-                                href="#"/>
-                            
-                            <hr>
-                            <x-menus.submenu-item
-                                content="Profile"
-                                selectable="0"
-                                href="#"/>
-                            <x-menus.submenu-item
-                                content="Change Password"
-                                selectable="0"
-                                href="#"/>
-                            <hr>
-                            <x-menus.submenu-item
-                                content="Log Out"
-                                selectable="0"
-                                href="#"/>
+                                </x-slot>
+                                <x-menus.submenu-item content="My Disciplines" selectable="0" href="#" />
+                                <x-menus.submenu-item content="My Teachers" selectable="0" href="#" />
+                                <x-menus.submenu-item content="My Students" selectable="0" href="#" />
+                                <hr>
+                                <x-menus.submenu-item content="Profile" selectable="0" href="{{ route('profile.edit') }}" />
+                                <hr>
+                                <form id="form_to_logout_from_menu" method="POST" action="{{ route('logout') }}" class="hidden">
+                                    @csrf
+                                </form>
+                                <a class="px-3 py-4 border-b-2 border-transparent
+                                        text-sm font-medium leading-5 inline-flex h-auto
+                                        text-gray-500 dark:text-gray-400
+                                        hover:text-gray-700 dark:hover:text-gray-300
+                                        hover:bg-gray-100 dark:hover:bg-gray-800
+                                        focus:outline-none
+                                        focus:text-gray-700 dark:focus:text-gray-300
+                                        focus:bg-gray-100 dark:focus:bg-gray-800" href="#" onclick="event.preventDefault();
+                                    document.getElementById('form_to_logout_from_menu').submit();">
+                                    Log Out
+                                </a>
                         </x-menus.submenu>
+                        @else
+                        <!-- Menu Item: Login -->
+                        <x-menus.menu-item content="Login" selectable="1" href="{{ route('login') }}" selected="{{ Route::currentRouteName() == 'login'}}" />
+
+                        @endauth
                     </div>
                     <!-- Hamburger -->
                     <div class="absolute right-0 top-0 flex sm:hidden pt-3 pe-3 text-black dark:text-gray-50">
                         <button id="hamburger_btn">
                             <svg class="h-8 w-8" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                <path id="hamburger_btn_open" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                                <path class="invisible" id="hamburger_btn_close" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                <path id="hamburger_btn_open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                <path class="invisible" id="hamburger_btn_close" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
                         </button>
                     </div>
@@ -102,7 +124,7 @@
         <header class="bg-white dark:bg-gray-900 shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <h4 class="mb-1 text-base text-gray-500 dark:text-gray-400 leading-tight">
-                    CineProject
+                    Department of Computer Engineering
                 </h4>
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                     @yield('header-title')
@@ -113,12 +135,12 @@
         <main>
             <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                 @if (session('alert-msg'))
-                    <x-alert type="{{ session('alert-type') ?? 'info' }}">
-                        {!! session('alert-msg') !!}
-                    </x-alert>
+                <x-alert type="{{ session('alert-type') ?? 'info' }}">
+                    {!! session('alert-msg') !!}
+                </x-alert>
                 @endif
                 @if (!$errors->isEmpty())
-                        <x-alert type="warning" message="Operation failed because there are validation errors!"/>
+                <x-alert type="warning" message="Operation failed because there are validation errors!" />
                 @endif
                 @yield('main')
             </div>

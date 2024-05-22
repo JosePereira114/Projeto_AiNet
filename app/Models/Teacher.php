@@ -12,16 +12,19 @@ class Teacher extends Model
     use HasFactory;
 
     public $timestamps = false;
+
     protected $fillable = ['user_id', 'department', 'office', 'extension', 'locker'];
 
     public function departmentRef(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'department', 'abbreviation');
     }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
     public function disciplines(): BelongsToMany
     {
         return $this->belongsToMany(

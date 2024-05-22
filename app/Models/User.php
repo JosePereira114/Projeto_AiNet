@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Storage;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -26,6 +28,7 @@ class User extends Authenticatable
         'gender',
         'photo_url'
     ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -48,10 +51,23 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function getPhotoFullUrlAttribute()
+    {
+        debug($this->photo_url);
+
+        if ($this->photo_url && Storage::exists("public/photos/{$this->photo_url}")) {
+            return asset("storage/photos/{$this->photo_url}");
+        } else {
+            return asset("storage/photos/anonymous.png");
+        }
+    }
+
     public function teacher(): HasOne
     {
         return $this->hasOne(Teacher::class);
     }
+
     public function student(): HasOne
     {
         return $this->hasOne(Student::class);

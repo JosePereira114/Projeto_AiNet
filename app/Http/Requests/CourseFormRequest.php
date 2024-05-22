@@ -31,6 +31,7 @@ class CourseFormRequest extends FormRequest
             'contact' => 'required|email',
             'objectives' => 'required|string',
             'objectives_pt' => 'required|string',
+            'image_file' => 'sometimes|image|mimes:png|max:4096', // maxsize = 4Mb
         ];
         if (strtolower($this->getMethod()) == 'post') {
             // This will merge 2 arrays:

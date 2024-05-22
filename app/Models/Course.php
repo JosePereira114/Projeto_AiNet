@@ -42,19 +42,30 @@ class Course extends Model
             . $this->name;
     }
 
+    public function getFileNameAttribute()
+    {
+        return strtoupper(trim($this->abbreviation)) . '.png';
+    }
+
+    public function getImageExistsAttribute()
+    {
+        return Storage::exists("public/courses/{$this->fileName}");
+    }
+
     public function getImageUrlAttribute()
     {
-        $abrUpper = strtoupper(trim($this->abbreviation));
-        if (Storage::exists("public/courses/$abrUpper.png")) {
-            return asset("storage/courses/$abrUpper.png");
+        if ($this->imageExists) {
+            return asset("storage/courses/{$this->fileName}");
         } else {
             return asset("storage/courses/no_course.png");
         }
     }
+
     public function students(): HasMany
     {
         return $this->hasMany(Student::class, 'course', 'abbreviation');
     }
+
     public function disciplines(): HasMany
     {
         return $this->hasMany(Discipline::class, 'course', 'abbreviation');

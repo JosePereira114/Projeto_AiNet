@@ -5,7 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Course;
-
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -21,9 +22,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::define('admin', function (User $user) {
+            // Only "administrator" users can "admin"
+            return $user->admin;
+        });
         try {
             // View::share adds data (variables) that are shared through all views (like global data)
-            View::share('courses', Course::all());
+            View::share('courses', Course::orderBy('type')->orderBy('name')->get());
         } catch (\Exception $e) {
             // If no Database exists, or Course table does not exist yet, an error will occour
             // This will ignore this error to avoid problems before migration is correctly executed

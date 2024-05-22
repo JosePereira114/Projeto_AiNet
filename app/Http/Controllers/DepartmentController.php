@@ -14,7 +14,7 @@ class DepartmentController extends Controller
     public function index(): View
     {
         return view('departments.index')
-            ->with('departments', Department::paginate(20));
+            ->with('departments', Department::orderBy('name')->paginate(20));
     }
 
     public function create(): View
@@ -77,7 +77,7 @@ class DepartmentController extends Controller
                             <a href='$url'><u>{$department->name}</u></a> ({$department->abbreviation})
                             because there was an error with the operation!";
         }
-        return redirect()->back()
+        return redirect()->route('departments.index')
             ->with('alert-type', $alertType)
             ->with('alert-msg', $alertMsg);
     }

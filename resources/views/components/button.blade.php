@@ -66,6 +66,9 @@
         </a>
     @else
         <button type="{{ $element }}" {{ $buttonName ? "name='$buttonName'" : '' }}
+            @if(($element == 'submit') && ($attributes->has('form')))
+                {{ $attributes->merge(['form' => '#']) }}
+            @endif
             class="px-4 py-2 inline-block border border-transparent rounded-md
                     font-medium text-sm tracking-widest
                     focus:outline-none focus:ring-2

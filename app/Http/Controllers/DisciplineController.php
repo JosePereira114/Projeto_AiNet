@@ -13,7 +13,8 @@ class DisciplineController extends Controller
 {
     /**
      * Display a listing of the resource.
-     */
+        */
+
     public function index(Request $request): View
     {
         $filterByCourse = $request->query('course');
@@ -30,28 +31,45 @@ class DisciplineController extends Controller
         if ($filterBySemester !== null) {
             $disciplinesQuery->where('semester', $filterBySemester);
         }
+        // if ($filterByTeacher !== null) {
+        //     $usersIds = DB::table('users')
+        //         ->where('type', 'T')
+        //         ->where('name', 'like', "%$filterByTeacher%")
+        //         ->pluck('id')
+        //         ->toArray();
+        //     $teachersIds = DB::table('teachers')
+        //         ->whereIntegerInRaw('user_id', $usersIds)
+        //         ->pluck('id')
+        //         ->toArray();
+        //     $disciplinesIds = DB::table('teachers_disciplines')
+        //         ->whereIntegerInRaw('teacher_id', $teachersIds)
+        //         ->pluck('discipline_id')
+        //         ->toArray();
+        //     $disciplinesQuery->whereIntegerInRaw('id', $disciplinesIds);
+        // }
+
         if ($filterByTeacher !== null) {
-            $usersIds = DB::table('users')
-                ->where('type', 'T')
-                ->where('name', 'like', "%$filterByTeacher%")
-                ->pluck('id')
-                ->toArray();
-            $teachersIds = DB::table('teachers')
-                ->whereIntegerInRaw('user_id', $usersIds)
-                ->pluck('id')
-                ->toArray();
-            $disciplinesIds = DB::table('teachers_disciplines')
-                ->whereIntegerInRaw('teacher_id', $teachersIds)
-                ->pluck('discipline_id')
-                ->toArray();
-            $disciplinesQuery->whereIntegerInRaw('id', $disciplinesIds);
+            $disciplinesQuery->with('teachers.user')->whereHas(
+                'teachers.user',
+                function ($userQuery) use ($filterByTeacher) {
+                    $userQuery->where('name', 'LIKE', '%' . $filterByTeacher . '%');
+                }
+            );
         }
-        $disciplines = $disciplinesQuery->with('courseRef')->paginate(20)->withQueryString();
+
+        $disciplines = $disciplinesQuery
+            ->with('courseRef')
+            ->orderBy('year')
+            ->orderBy('semester')
+            ->orderBy('name')
+            ->paginate(20)
+            ->withQueryString();
         return view(
             'disciplines.index',
             compact('disciplines', 'filterByCourse', 'filterByYear', 'filterBySemester', 'filterByTeacher')
         );
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -64,7 +82,7 @@ class DisciplineController extends Controller
         //$courses = Course::all();
         return view('disciplines.create')
             ->with('discipline', $discipline);
-        //->with('courses', $courses);
+            //->with('courses', $courses);
     }
 
     /**
@@ -76,8 +94,8 @@ class DisciplineController extends Controller
         $url = route('disciplines.show', ['discipline' => $NewDiscipline]);
         $htmlMessage = "Discipline <a href='$url'><u>{$NewDiscipline->name}</u></a> ({$NewDiscipline->abbreviation}) has been created successfully!";
         return redirect()->route('disciplines.index')
-            ->with('alert-type', 'success')
-            ->with('alert-msg', $htmlMessage);
+        ->with('alert-type', 'success')
+        ->with('alert-msg', $htmlMessage);
     }
 
 
@@ -155,7 +173,7 @@ class DisciplineController extends Controller
                             <a href='$url'><u>{$discipline->name}</u></a> ({$discipline->abbreviation})
                             because there was an error with the operation!";
         }
-        return redirect()->back()
+        return redirect()->route('disciplines.index')
             ->with('alert-type', $alertType)
             ->with('alert-msg', $alertMsg);
     }

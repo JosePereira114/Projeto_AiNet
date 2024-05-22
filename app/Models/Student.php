@@ -19,10 +19,12 @@ class Student extends Model
     {
         return $this->belongsTo(Course::class, 'course', 'abbreviation');
     }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
     public function disciplines(): BelongsToMany
     {
         return $this->belongsToMany(

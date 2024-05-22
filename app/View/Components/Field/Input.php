@@ -21,7 +21,7 @@ class Input extends Component
         public string $width = 'full',
     ) {
         $this->type = trim(strtolower($type));
-        if (!in_array($this->type, ['text', 'password', 'number', 'email', 'date', 'time', 'datetime-local', 'month', 'week', 'range', 'color'], true)) {
+        if (!in_array($this->type, ['text', 'password', 'number', 'email', 'date', 'time', 'datetime-local', 'month', 'week', 'range', 'color', 'file'], true)) {
             $this->type = 'text';
         }
         $this->width = trim(strtolower($width));

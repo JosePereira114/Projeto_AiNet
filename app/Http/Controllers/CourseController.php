@@ -8,12 +8,14 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\CourseFormRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
     public function index(): View
     {
-        $allCourses = Course::paginate(20);
+        $allCourses = Course::orderBy('type')->orderBy('name')->paginate(20);
+
         return view('courses.index')->with('allCourses', $allCourses);
     }
 
@@ -31,6 +33,11 @@ class CourseController extends Controller
     public function store(CourseFormRequest $request): RedirectResponse
     {
         $newCourse = Course::create($request->validated());
+
+        if ($request->hasFile('image_file')) {
+            $request->image_file->storeAs('public/courses', $newCourse->fileName);
+        }
+
         $url = route('courses.show', ['course' => $newCourse]);
         $htmlMessage = "Course <a href='$url'><u>{$newCourse->name}</u></a> ({$newCourse->abbreviation}) has been created successfully!";
         return redirect()->route('courses.index')
@@ -46,6 +53,14 @@ class CourseController extends Controller
     public function update(CourseFormRequest $request, Course $course): RedirectResponse
     {
         $course->update($request->validated());
+
+        if ($request->hasFile('image_file')) {
+            if ($course->imageExists) {
+                Storage::delete("public/courses/{$course->fileName}");
+            }
+            $request->image_file->storeAs('public/courses', $course->fileName);
+        }
+
         $url = route('courses.show', ['course' => $course]);
         $htmlMessage = "Course <a href='$url'><u>{$course->name}</u></a> ({$course->abbreviation}) has been updated successfully!";
         return redirect()->route('courses.index')
@@ -65,6 +80,9 @@ class CourseController extends Controller
                 [$course->abbreviation]);
             if ($totalStudents == 0 && $totalDisciplines == 0) {
                 $course->delete();
+                if ($course->imageExists) {
+                    Storage::delete("public/courses/{$course->fileName}");
+                }
                 $alertType = 'success';
                 $alertMsg = "Course {$course->name} ({$course->abbreviation}) has been deleted successfully!";
             } else {
@@ -90,7 +108,7 @@ class CourseController extends Controller
                             <a href='$url'><u>{$course->name}</u></a> ({$course->abbreviation})
                             because there was an error with the operation!";
         }
-        return redirect()->back()
+        return redirect()->route('courses.index')
             ->with('alert-type', $alertType)
             ->with('alert-msg', $alertMsg);
     }
@@ -98,5 +116,21 @@ class CourseController extends Controller
     public function show(Course $course): View
     {
         return view('courses.show')->with('course', $course);
+    }
+
+    public function showCurriculum(Course $course): View
+    {
+        return view('courses.curriculum')->with('course', $course);
+    }
+
+    public function destroyImage(Course $course): RedirectResponse
+    {
+        if ($course->imageExists) {
+            Storage::delete("public/courses/{$course->fileName}");
+        }
+        return redirect()->back()
+            ->with('alert-type', 'success')
+            ->with('alert-msg', "Image of course {$course->name} has been deleted.");
+        return redirect()->back();
     }
 }
