@@ -35,12 +35,10 @@
                     invisible h-0 sm:visible sm:h-auto">
                         <!-- Menu Item: Courses -->
                         <x-menus.menu-item content="Courses" href="{{ route('courses.showcase') }}" selected="{{ Route::currentRouteName() == 'courses.showcase'}}" />
-
+                        <x-menus.menu-item content="Movies" href="{{ route('movies.showcase') }}" selected="{{ Route::currentRouteName() == 'movies.showcase'}}" />
                         <!-- Menu Item: Curricula -->
                         <x-menus.submenu-full-width content="Curricula" selectable="1" selected="0" uniqueName="submenu_curricula">
-                            <!--@foreach ($courses as $course)
-                            <x-menus.submenu-item :content="$course->fullName" selectable="1" selected="0" href="{{ route('courses.curriculum', ['course' => $course]) }}" />
-                            @endforeach-->
+                            
                         </x-menus.submenu-full-width>
 
                         <!-- Menu Item: Disciplines -->

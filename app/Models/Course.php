@@ -44,7 +44,7 @@ class Course extends Model
 
     public function getFileNameAttribute()
     {
-        return strtoupper(trim($this->abbreviation)) . '.png';
+        return strtoupper(trim($this->abbreviation)) . '.jpg';
     }
 
     public function getImageExistsAttribute()
@@ -57,7 +57,7 @@ class Course extends Model
         if ($this->imageExists) {
             return asset("storage/courses/{$this->fileName}");
         } else {
-            return asset("storage/courses/no_course.png");
+            return asset("storage/courses/no_course.jpg");
         }
     }
 

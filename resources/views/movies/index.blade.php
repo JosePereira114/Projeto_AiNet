@@ -13,14 +13,14 @@
                     type="success"/>
             </div>
             <div class="font-base text-sm text-gray-700 dark:text-gray-300">
-                <x-courses.table :movies="$allMovies"
+                <x-courses.table :movies="$movies"
                     :showView="true"
                     :showEdit="true"
                     :showDelete="true"
                     />
             </div>
             <div class="mt-4">
-                {{ $allMovies->links() }}
+                {{ $movies->links() }}
             </div>
         </div>
     </div>

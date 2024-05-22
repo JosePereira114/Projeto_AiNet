@@ -9,6 +9,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Student;
 
@@ -17,7 +18,7 @@ use App\Models\Student;
 Route::view('/', 'home')->name('home');
 Route::get('courses/showcase', [CourseController::class, 'showCase'])->name('courses.showcase');
 Route::get('courses/{course}/curriculum', [CourseController::class, 'showCurriculum'])->name('courses.curriculum');
-Route::get('movies/showcase', [CourseController::class, 'showCase'])->name('movies.showcase');
+Route::get('movies/showcase', [MovieController::class, 'showCase'])->name('movies.showcase');
 /* ----- Non-Verified users ----- */
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -104,6 +105,7 @@ Route::middleware('auth', 'verified')->group(function () {
 /* ----- OTHER PUBLIC ROUTES ----- */
 //Course show is public.
 Route::resource('courses', CourseController::class)->only(['show']);
+Route::resource('movies', MovieController::class)->only(['show']);
 //Disciplines index and show are public
 Route::resource('disciplines', DisciplineController::class)->only(['index', 'show']);
 

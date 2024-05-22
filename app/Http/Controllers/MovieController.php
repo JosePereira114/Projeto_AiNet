@@ -19,7 +19,8 @@ class MovieController extends Controller
     }
     public function showCase(): View
     {
-        return view('movies.showcase');
+        $movies = Movie::all();
+        return view('movies.showcase',['movies' => $movies]);
     }
     /**
      * Show the form for creating a new resource.

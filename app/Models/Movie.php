@@ -30,7 +30,24 @@ class Movie extends Model
 
     protected $keyType = 'int';
 
-    
+    public function getFileNameAttribute()
+    {
+        return strtoupper(trim($this->id));
+    }
+
+    public function getImageExistsAttribute()
+    {
+        return Storage::exists("public/posters/{$this->poster_filename}");
+    }
+
+    public function getImageUrlAttribute()
+    {
+        if ($this->imageExists) {
+            return asset("storage/posters/{$this->poster_filename}");
+        } else {
+            return asset("storage/posters/_no_poster_1.jpg");
+        }
+    }
 
 
     public function getPosterUrlAttribute(): string
