@@ -55,11 +55,15 @@ class MovieController extends Controller
      */
     public function show(Movie $movie):View
     {
+        $movie = Movie::findOrFail($movie->id);
         return view('movies.show')->with('movie', $movie);
     }
     public function showScreening(Movie $movie):View
     {
-        return view('movies.screening')->with('movie', $movie);
+        // O Movie já está injetado e resolve automaticamente pelo ID, não há necessidade de fazer outra consulta.
+        $movie->load('screenings'); // Carrega as exibições (screenings) relacionadas ao filme.
+        $screenings = $movie->screenings;
+        return view('movies.screening',['movie'  => $movie,'screenings' => $screenings]);
     }
 
     /**

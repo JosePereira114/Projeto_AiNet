@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use app\Models\Genre;
-use app\Models\Screaning;
+use Illuminate\Database\Eloquent\Relations\HasMany; 
+use App\Models\Genre;
+use App\Models\Screening;
 
 class Movie extends Model
 {
@@ -51,11 +51,11 @@ class Movie extends Model
 
     public function genres(): BelongsTo
     {
-        return $this->belongsTo(Genre::class, 'id', 'id');
+        return $this->belongsTo(Genre::class, 'genre_code', 'id');
     }
 
-    public function screening(): HasMany
+    public function screenings(): HasMany
     {
-        return $this->hasMany(Screening::class, 'id', 'id');
+        return $this->hasMany(Screening::class, 'movie_id', 'id');
     }
 }
