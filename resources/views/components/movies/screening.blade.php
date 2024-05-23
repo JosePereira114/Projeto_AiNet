@@ -1,6 +1,6 @@
 
 
-<h2 class="text-2xl font-bold mt-6 mb-4">Screenings</h2>
+<h2 class="text-2xl font-bold mt-6 mb-4">History Screenings</h2>
         <div>
             <table class="table-auto border-collapse w-full">
                 <thead>
