@@ -33,7 +33,7 @@ class Purchase extends Model
         return $this->hasOne(Customer::class, 'id', 'id')->withTrashed();
     }
 
-    public function ticket(): HasMany
+    public function tickets(): HasMany
     {
         return $this->hasMany(Ticket::class, 'id', 'id');
     }

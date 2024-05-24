@@ -10,6 +10,7 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\TheaterController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Student;
 
@@ -20,6 +21,10 @@ Route::get('courses/showcase', [CourseController::class, 'showCase'])->name('cou
 Route::get('courses/{course}/curriculum', [CourseController::class, 'showCurriculum'])->name('courses.curriculum');
 Route::get('movies/showcase', [MovieController::class, 'showCase'])->name('movies.showcase');
 Route::get('/movies/{movie}/screenings', [MovieController::class, 'showScreening']);
+Route::resource('theaters',TheaterController::class);
+Route::delete('theaters/{theater}/photo', [TheaterController::class, 'destroyPhoto'])
+->name('theaters.photo.destroy')
+->can('update', 'theater');
 /* ----- Non-Verified users ----- */
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

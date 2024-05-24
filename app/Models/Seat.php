@@ -19,7 +19,7 @@ class Seat extends Model
         'custom',
     ];
     public $timestamps = false;
-    public function ticket():HasMany{
+    public function tickets():HasMany{
         return $this->hasMany(Ticket::class);
     }
     public function theater():BelongsTo{
