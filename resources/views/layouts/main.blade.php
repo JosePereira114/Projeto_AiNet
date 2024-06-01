@@ -76,11 +76,11 @@
                         <x-menus.submenu selectable="0" uniqueName="submenu_user">
                             <x-slot:content>
                                 <div class="pe-1">
-                                    <img src="{{ Auth::user()->photoFullUrl}}" class="w-11 h-11 min-w-11 min-h-11 rounded-full">
+                                    <img src="{{ Auth::user()->photoFullUrl??null}}" class="w-11 h-11 min-w-11 min-h-11 rounded-full">
                                 </div>
                                 {{-- ATENÇÃO - ALTERAR FORMULA DE CALCULO DAS LARGURAS MÁXIMAS QUANDO O MENU FOR ALTERADO --}}
                                 <div class="ps-1 sm:max-w-[calc(100vw-39rem)] md:max-w-[calc(100vw-41rem)] lg:max-w-[calc(100vw-46rem)] xl:max-w-[34rem] truncate">
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()->name ??null}}
                                 </div>
                                 </x-slot>
                                 <x-menus.submenu-item content="My Disciplines" selectable="0" href="#" />
@@ -104,7 +104,7 @@
                                     Log Out
                                 </a>
                         </x-menus.submenu>
-                        @else
+                        
                         <!-- Menu Item: Login -->
                         <x-menus.menu-item content="Login" selectable="1" href="{{ route('login') }}" selected="{{ Route::currentRouteName() == 'login'}}" />
 
