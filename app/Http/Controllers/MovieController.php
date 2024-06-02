@@ -6,6 +6,7 @@ use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\View\View; 
 use Illuminate\Http\RedirectResponse;
+use Carbon\Carbon;
 
 class MovieController extends Controller
 {
@@ -24,8 +25,14 @@ class MovieController extends Controller
     }
     public function showMoment(): View
     {
-        $movies = Movie::whereHas('screning')->get();
-        return view('movies.showmoment',['movies' => $movies]);
+        $startDate = Carbon::now()->startOfDay();
+        $endDate = Carbon::now()->addWeeks(2)->endOfDay();
+        $movies = Movie::whereHas('screenings', function ($query) use ($startDate, $endDate) {
+            $query->whereBetween('date', [$startDate, $endDate]);
+        })->get();
+
+        
+        return view('movies.showmoment', ['movies' => $movies]);
     }
     /**
      * Show the form for creating a new resource.

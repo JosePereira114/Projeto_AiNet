@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Carbon\Carbon;
 
 class Screening extends Model
 {
@@ -17,6 +18,8 @@ class Screening extends Model
         'theater_id',
         'custom',
     ];
+    protected $dates = ['date'];
+
     public function tickets():HasMany{
         return $this->hasMany(Ticket::class);
     }
