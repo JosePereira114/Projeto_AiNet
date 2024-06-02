@@ -11,6 +11,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\TheaterController;
+use App\Http\Controllers\GenreController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Student;
 
@@ -25,6 +26,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+/*----- Géneros -----*/
+
+Route::get('genres/create', [GenreController::class, 'create'])->name('genres.create');
+Route::post('genres', [GenreController::class, 'store'])->name('genres.store');
+
 
 /* ----- Verified users ----- */
 Route::middleware('auth', 'verified')->group(function () {
