@@ -62,16 +62,7 @@ class User extends Authenticatable implements MustVerifyEmail
             return asset("storage/photos/anonymous.png");
         }
     }
-
-    public function teacher(): HasOne
-    {
-        return $this->hasOne(Teacher::class);
-    }
-
-    public function student(): HasOne
-    {
-        return $this->hasOne(Student::class);
-    }
+    
     public function customer(): HasOne
     {
         return $this->hasOne(Customer::class);

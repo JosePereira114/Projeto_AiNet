@@ -22,10 +22,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        //só os que têm o type na bd a A é que podem aceder
         Gate::define('admin', function (User $user) {
-            // Only "administrator" users can "admin"
-            return $user->admin;
+            return $user->type === 'A';
         });
+
+        Gate::define('custumer', function (User $user) {
+            return $user->type === 'C';
+        });
+
+        Gate::define('employee', function (User $user) {
+            return $user->type === 'E';
+        });
+
+        
         try {
             // View::share adds data (variables) that are shared through all views (like global data)
             View::share('courses', Course::orderBy('type')->orderBy('name')->get());

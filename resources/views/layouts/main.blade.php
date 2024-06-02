@@ -34,13 +34,8 @@
                     <div id="menu-container" class="grow flex flex-col sm:flex-row items-stretch
                     invisible h-0 sm:visible sm:h-auto">
                         <!-- Menu Item: Movies -->
-                        @can('viewShowcase', App\Models\Course::class)
-                            <x-menus.menu-item
-                                content="Courses"
-                                href="{{ route('movies.showcase') }}"
-                                selected="{{ Route::currentRouteName() == 'movies.showcase'}}"
-                            />
-                        @endcan
+                        <x-menus.menu-item content="Movies" href="{{ route('movies.showcase') }}" selected="{{ Route::currentRouteName() == 'movies.showcase'}}" />
+
                         <!-- Menu Item: Curricula -->
                         <x-menus.submenu-full-width content="Curricula" selectable="1" selected="0" uniqueName="submenu_curricula">
                             
@@ -72,7 +67,7 @@
                         <x-menus.cart :href="route('cart.show')" selectable="1" selected="{{ Route::currentRouteName() == 'cart.show'}}" :total="session('cart')->count()" />
                         @endif
 
-                        
+                        @auth
                         <x-menus.submenu selectable="0" uniqueName="submenu_user">
                             <x-slot:content>
                                 <div class="pe-1">
@@ -107,8 +102,7 @@
                         @else
                         <!-- Menu Item: Login -->
                         <x-menus.menu-item content="Login" selectable="1" href="{{ route('login') }}" selected="{{ Route::currentRouteName() == 'login'}}" />
-
-                       
+                        @endauth
                     </div>
                     <!-- Hamburger -->
                     <div class="absolute right-0 top-0 flex sm:hidden pt-3 pe-3 text-black dark:text-gray-50">
