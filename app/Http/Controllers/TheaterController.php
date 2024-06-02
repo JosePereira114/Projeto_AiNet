@@ -119,8 +119,8 @@ class TheaterController extends Controller
                 };
                 $seatsStr = match (true) {
                     $totalSeats <= 0 => "",
-                    $totalSeats == 1 => "it already has 1 teacher",
-                    $totalSeats > 1 => "it already has $totalSeats teachers",
+                    $totalSeats == 1 => "it already has 1 theater",
+                    $totalSeats > 1 => "it already has $totalSeats theater",
                 };
                 $justification = $screeningsStr && $seatsStr
                     ? "$screeningsStr and $seatsStr"

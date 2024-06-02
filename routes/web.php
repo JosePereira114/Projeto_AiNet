@@ -17,14 +17,8 @@ use App\Models\Student;
 /* ----- PUBLIC ROUTES ----- */
 
 Route::view('/', 'home')->name('home');
+Route::get('courses/showcase', [CourseController::class, 'showCase'])->name('courses.showcase');
 
-Route::get('movies/showcase', [MovieController::class, 'showCase'])->name('movies.showcase');
-
-Route::get('/movies/{movie}/screenings', [MovieController::class, 'showScreening']);
-Route::resource('theaters',TheaterController::class);
-Route::delete('theaters/{theater}/photo', [TheaterController::class, 'destroyPhoto'])
-->name('theaters.photo.destroy')
-->can('update', 'theater');
 /* ----- Non-Verified users ----- */
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -81,7 +75,7 @@ Route::middleware('auth', 'verified')->group(function () {
     // Route::delete('students/{student}', [StudentController::class, 'destroy'])
     //     ->name('students.destroy')
     //     ->can('delete', 'student');
-   
+
 
     Route::delete('administratives/{administrative}/photo', [AdministrativeController::class, 'destroyPhoto'])
         ->name('administratives.photo.destroy');
@@ -105,11 +99,14 @@ Route::middleware('auth', 'verified')->group(function () {
         Route::resource('courses', CourseController::class)->except(['index', 'show']);
         //Department insert, update and delete related routes are for admin only
         Route::resource('departments', DepartmentController::class)->except(['index', 'show']);
-
-        //movies
-        Route::resource('movies', MovieController::class)->except(['index', 'show']);
-
     });
+    Route::get('courses/{course}/curriculum', [CourseController::class, 'showCurriculum'])->name('courses.curriculum');
+Route::get('movies/showcase', [MovieController::class, 'showCase'])->name('movies.showcase');
+Route::get('/movies/{movie}/screenings', [MovieController::class, 'showScreening']);
+Route::resource('theaters',TheaterController::class);
+Route::delete('theaters/{theater}/photo', [TheaterController::class, 'destroyPhoto'])
+->name('theaters.photo.destroy')
+->can('update', 'theater');
 });
 
 /* ----- OTHER PUBLIC ROUTES ----- */
