@@ -5,6 +5,7 @@
 /public/storage
 /storage/*.key
 /vendor
+/storage/app/public
 .env
 .env.backup
 .env.production
@@ -23,4 +24,4 @@ yarn-error.log
 /bootstrap
 *.env
 composer.lock
-composer.lock
+composer.lock  
