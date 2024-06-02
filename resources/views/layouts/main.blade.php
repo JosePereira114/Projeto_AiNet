@@ -38,7 +38,7 @@
 
                         <!-- Menu Item: Curricula -->
                         <x-menus.submenu-full-width content="Curricula" selectable="1" selected="0" uniqueName="submenu_curricula">
-                            
+
                         </x-menus.submenu-full-width>
 
                         <!-- Menu Item: Disciplines -->
@@ -99,11 +99,13 @@
                                     Log Out
                                 </a>
                         </x-menus.submenu>
-                        
+
                         <!-- Menu Item: Login -->
-                        @endauth
+                        @else
+                        <!-- Menu Item: Login -->
                         <x-menus.menu-item content="Login" selectable="1" href="{{ route('login') }}" selected="{{ Route::currentRouteName() == 'login'}}" />
-                        
+                        @endauth
+
                     </div>
                     <!-- Hamburger -->
                     <div class="absolute right-0 top-0 flex sm:hidden pt-3 pe-3 text-black dark:text-gray-50">
