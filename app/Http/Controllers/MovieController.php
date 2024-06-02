@@ -8,6 +8,7 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Carbon\Carbon;
 
+
 class MovieController extends Controller
 {
     /**
@@ -20,7 +21,7 @@ class MovieController extends Controller
     }
     public function showCase(): View
     {
-        $movies = Movie::all();
+        $movies = Movie::paginate(20);
         return view('movies.showcase',['movies' => $movies]);
     }
     public function showMoment(): View

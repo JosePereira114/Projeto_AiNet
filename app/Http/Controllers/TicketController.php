@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use App\Models\Movie;
 
 class TicketController extends Controller
 {
@@ -62,4 +63,9 @@ class TicketController extends Controller
     {
         //
     }
+    public function buy(Movie $movie)
+    {
+        return view('tickets.buy', ['movie' => $movie]);
+    }
+    
 }

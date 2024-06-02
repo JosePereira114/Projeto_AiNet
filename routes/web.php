@@ -8,6 +8,7 @@ use App\Http\Controllers\DisciplineController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\TheaterController;
@@ -31,10 +32,9 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 /* ----- PUBLIC ROUTES ----- */
-
-    Route::get('/', [MovieController::class, 'showMoment'])->name('home');
+Route::get('/', [MovieController::class, 'showMoment'])->name('home');
 Route::get('courses/showcase', [CourseController::class, 'showcase'])->name('courses.showcase');
-
+Route::get('ticket/{movie}', [TicketController::class, 'buy'])->name('ticket.buy');
 /* ----- Non-Verified users ----- */
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
