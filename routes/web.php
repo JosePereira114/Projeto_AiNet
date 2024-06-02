@@ -17,8 +17,8 @@ use App\Models\Student;
 
 /* ----- PUBLIC ROUTES ----- */
 
-Route::view('/', 'home')->name('home');
-Route::get('courses/showcase', [CourseController::class, 'showCase'])->name('courses.showcase');
+    Route::get('/', [MovieController::class, 'showcase'])->name('home');
+Route::get('courses/showcase', [CourseController::class, 'showMoment'])->name('courses.showcase');
 
 /* ----- Non-Verified users ----- */
 Route::middleware('auth')->group(function () {

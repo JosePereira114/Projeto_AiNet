@@ -101,8 +101,9 @@
                         </x-menus.submenu>
                         
                         <!-- Menu Item: Login -->
-                        <x-menus.menu-item content="Login" selectable="1" href="{{ route('login') }}" selected="{{ Route::currentRouteName() == 'login'}}" />
                         @endauth
+                        <x-menus.menu-item content="Login" selectable="1" href="{{ route('login') }}" selected="{{ Route::currentRouteName() == 'login'}}" />
+                        
                     </div>
                     <!-- Hamburger -->
                     <div class="absolute right-0 top-0 flex sm:hidden pt-3 pe-3 text-black dark:text-gray-50">
