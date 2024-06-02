@@ -18,7 +18,7 @@ class Genre extends Model
         'custom',
         'deleted_at',
     ];
-    public $timestmap = false;
+    public $timestamps = false;
     public $primaryKey = 'code';
     public $incrementing = false;
 
