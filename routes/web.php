@@ -35,6 +35,7 @@ require __DIR__.'/auth.php';
 Route::get('/', [MovieController::class, 'showMoment'])->name('home');
 Route::get('courses/showcase', [CourseController::class, 'showcase'])->name('courses.showcase');
 Route::get('ticket/{movie}', [TicketController::class, 'buy'])->name('ticket.buy');
+Route::get('/movies/{movie}/selectscreening', [MovieController::class, 'showMomentScreenings'])->name('movies.showMomentScreenings');
 /* ----- Non-Verified users ----- */
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

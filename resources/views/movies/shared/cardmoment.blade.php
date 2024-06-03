@@ -19,7 +19,7 @@
             <p class="pt-4 font-light text-gray-700 dark:text-gray-300 overflow-y-auto">
                 {{ $movie->synopsis }}
             </p>
-            <a class="h-48 w-48 md:h-72 md:w-72 md:min-w-72 md:max-w-72 mx-auto md:m-0"href="{{ route('ticket.buy', ['movie' => $movie]) }}" >
+            <a class="h-48 w-48 md:h-72 md:w-72 md:min-w-72 md:max-w-72 mx-auto md:m-0"href="{{ route('movies.showMomentScreenings', ['movie' => $movie]) }}" >
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Comprar Bilhete</button>
             </a>
         </div>

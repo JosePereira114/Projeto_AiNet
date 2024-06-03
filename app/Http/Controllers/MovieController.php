@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Movie;
 use Illuminate\Http\Request;
-use Illuminate\View\View; 
+use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Carbon\Carbon;
 
@@ -22,7 +22,7 @@ class MovieController extends Controller
     public function showCase(): View
     {
         $movies = Movie::paginate(20);
-        return view('movies.showcase',['movies' => $movies]);
+        return view('movies.showcase', ['movies' => $movies]);
     }
     public function showMoment(): View
     {
@@ -32,13 +32,24 @@ class MovieController extends Controller
             $query->whereBetween('date', [$startDate, $endDate]);
         })->get();
 
-        
+
         return view('movies.showmoment', ['movies' => $movies]);
     }
     /**
      * Show the form for creating a new resource.
      */
-    public function create():View
+    public function showMomentScreenings(Movie $movie): View
+    {
+        $startDate = Carbon::now()->startOfDay();
+        $endDate = Carbon::now()->addWeeks(2)->endOfDay();
+
+        $screenings = $movie->screenings()
+            ->whereBetween('date', [$startDate, $endDate])
+            ->get();
+
+        return view('movies.selectscreening', ['movie' => $movie, 'screenings' => $screenings]);
+    }
+    public function create(): View
     {
         $newMovie = new Movie();
         return view('movies.create')->with('movie', $newMovie);
@@ -61,17 +72,17 @@ class MovieController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Movie $movie):View
+    public function show(Movie $movie): View
     {
         $movie = Movie::findOrFail($movie->id);
         return view('movies.show')->with('movie', $movie);
     }
-    public function showScreening(Movie $movie):View
+    public function showScreening(Movie $movie): View
     {
         // O Movie já está injetado e resolve automaticamente pelo ID, não há necessidade de fazer outra consulta.
         $movie->load('screenings'); // Carrega as exibições (screenings) relacionadas ao filme.
         $screenings = $movie->screenings;
-        return view('movies.screening',['movie'  => $movie,'screenings' => $screenings]);
+        return view('movies.screening', ['movie'  => $movie, 'screenings' => $screenings]);
     }
 
     /**
@@ -93,7 +104,6 @@ class MovieController extends Controller
         return redirect()->route('movies.index')
             ->with('alert-type', 'success')
             ->with('alert-msg', $htmlMessage);
-
     }
 
     /**
@@ -101,10 +111,9 @@ class MovieController extends Controller
      */
     public function destroy(Movie $movie)
     {
-        try{
+        try {
             $url = route('movies.show', ['movie' => $movie]);
-            
-        }catch(\Exception $error){
+        } catch (\Exception $error) {
             $htmlMessage = "Movie <a href='$url'><u>{$movie->title}</u></a> has been deleted successfully!";
             return redirect()->route('movies.index')
                 ->with('alert-type', 'success')
