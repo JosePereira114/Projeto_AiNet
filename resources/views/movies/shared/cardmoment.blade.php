@@ -13,7 +13,7 @@
             </a>
             <figcaption class="font-medium">
                 <address class="font-light text-gray-700 dark:text-gray-300">
-                    <a href="{{ $movie->trailer_url }}"target="_blank">{{ $movie->trailer_url }}</a>.
+                    <a href="{{ $movie->trailer_url }}"target="_blank">TRAILER URL</a>
                 </address>
             </figcaption>
             <p class="pt-4 font-light text-gray-700 dark:text-gray-300 overflow-y-auto">

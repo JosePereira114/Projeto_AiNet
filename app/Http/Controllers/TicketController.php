@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use App\Models\Screening;
 
 class TicketController extends Controller
 {
@@ -63,9 +64,9 @@ class TicketController extends Controller
     {
         //
     }
-    public function buy(Movie $movie)
+    public function buy(Screening $screening)
     {
-        return view('tickets.buy', ['movie' => $movie]);
+        return view('tickets.buy', ['screening' => $screening]);
     }
     
 }

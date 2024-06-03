@@ -12,6 +12,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\TheaterController;
+use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\GenreController;
 use App\Models\Student;
 
@@ -34,7 +35,7 @@ require __DIR__.'/auth.php';
 /* ----- PUBLIC ROUTES ----- */
 Route::get('/', [MovieController::class, 'showMoment'])->name('home');
 Route::get('courses/showcase', [CourseController::class, 'showcase'])->name('courses.showcase');
-Route::get('ticket/{movie}', [TicketController::class, 'buy'])->name('ticket.buy');
+Route::get('tickets/{screening}', [TicketController::class, 'buy'])->name('tickets.buy');
 Route::get('/movies/{movie}/selectscreening', [MovieController::class, 'showMomentScreenings'])->name('movies.showMomentScreenings');
 /* ----- Non-Verified users ----- */
 Route::middleware('auth')->group(function () {
@@ -136,6 +137,7 @@ Route::delete('theaters/{theater}/photo', [TheaterController::class, 'destroyPho
 //Course show is public.
 Route::resource('courses', CourseController::class)->only(['show']);
 Route::resource('movies', MovieController::class)->only(['show']);
+Route::resource('screenings', ScreeningController::class)->only(['show']);
 //Disciplines index and show are public
 Route::resource('disciplines', DisciplineController::class)->only(['index', 'show']);
 
