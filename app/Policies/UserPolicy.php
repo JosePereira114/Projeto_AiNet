@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\Genre;
 
 
 class UserPolicy
@@ -23,7 +24,7 @@ class UserPolicy
         return (($user->type == 'A') && ($model->type != 'C')) || (($user->id == $model->id) && ($model->tipo == 'C'));
     }
 
-    public function create(User $user)
+    public function create(User $user, Genre $genre )
     {
         return ($user->type == 'A');
     }
@@ -41,17 +42,6 @@ class UserPolicy
     public function restore(User $user, User $model)
     {
         return ($user->type == 'A');
-    }
-
-
-    public function forceDelete(User $user)
-    {
-        return ($user->tipo == 'A');
-    }
-
-    public function bloquear(User $user, User $model)
-    {
-        return ($user->tipo == 'A') && ($user->id != $model->id);
     }
 }
 

@@ -13,6 +13,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\TheaterController;
 use App\Http\Controllers\GenreController;
 use App\Models\Student;
+use App\Models\Genre;
 
 Route::get('/', function () {
     return view('welcome');
@@ -44,7 +45,11 @@ Route::middleware('auth')->group(function () {
 
 /*----- Géneros -----*/
 
-Route::get('genres/create', [GenreController::class, 'create'])->name('genres.create');
+//Route::get('genres/create', [GenreController::class, 'create'])->name('genres.create');
+Route::get('genres/create', [GenreController::class, 'create'])
+->name('genres.create')
+->can('create', Genre::class);
+
 Route::post('genres', [GenreController::class, 'store'])->name('genres.store');
 
 

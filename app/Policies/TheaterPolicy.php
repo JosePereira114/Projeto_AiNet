@@ -11,6 +11,17 @@ class TheaterPolicy
     /**
      * Determine whether the user can view any models.
      */
+
+    public function before(?User $user, string $ability): bool|null
+    {
+        if ($user?->admin) {
+            return true;
+        }
+        // When "Before" returns null, other methods (eg. viewAny, view, etc...) will be
+        // used to check the user authorizaiton
+        return null;
+    }
+    
     public function viewAny(User $user): bool|null
     {
         //
