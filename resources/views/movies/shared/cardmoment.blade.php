@@ -13,12 +13,15 @@
             </a>
             <figcaption class="font-medium">
                 <address class="font-light text-gray-700 dark:text-gray-300">
-                    <a href="{{ $movie->trailer_url }}"target="_blank">{{ $movie->trailer_url }}</a>.
+                    <a href="{{ $movie->trailer_url }}"target="_blank">TRAILER URL</a>
                 </address>
             </figcaption>
             <p class="pt-4 font-light text-gray-700 dark:text-gray-300 overflow-y-auto">
                 {{ $movie->synopsis }}
             </p>
+            <a class="h-48 w-48 md:h-72 md:w-72 md:min-w-72 md:max-w-72 mx-auto md:m-0"href="{{ route('movies.showMomentScreenings', ['movie' => $movie]) }}" >
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Comprar Bilhete</button>
+            </a>
         </div>
     </figure>
 </div>

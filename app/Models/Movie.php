@@ -34,19 +34,15 @@ class Movie extends Model
         return strtoupper(trim($this->poster_filename));
     }
 
-    public function getImageExistsAttribute()
-    {
-        return Storage::exists("public/posters/{$this->fileName}");
-    }
-
     public function getImageUrlAttribute()
     {
-        if ($this->imageExists) {
-            return asset("storage/posters/{$this->fileName}");
+        if ($this->poster_filename && Storage::exists("public/posters/{$this->poster_filename}")) {
+            return asset("storage/posters/{$this->poster_filename}");
         } else {
-            return asset("storage/posters/_no_poster_1.jpg");
+            return asset("storage/posters/_no_poster_1.png");
         }
     }
+
     
 
     public function genre(): BelongsTo
