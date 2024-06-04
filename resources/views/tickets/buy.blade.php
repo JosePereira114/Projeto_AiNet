@@ -1,4 +1,4 @@
-{{$screening->theater->seats->count()}}
+{{$screening->theater->seats}}
 {{$screening->date}}({{$screening->start_time}})
 @extends('layouts.main')
 
@@ -22,7 +22,10 @@
                     enctype="multipart/form-data">
                     @csrf
                     <div class="mt-6 space-y-4">
-                    <input type="number" id="seats_number" name="seats_number" min="0" max="{{$screening->theater->seats->count() - $screening->tickets->count()}}" value="1">
+
+                    <div class="flex flex-col">
+                        @each('seats.shared.card', $screening->theater->seats, 'seat')
+                    </div>
                     </div>
                     <div class="flex mt-6">
                         <x-button element="submit" type="dark" text="Payment" class="uppercase"/>
