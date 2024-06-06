@@ -65,8 +65,14 @@ class TicketController extends Controller
         //
     }
     public function buy(Screening $screening)
-    {
-        return view('tickets.buy', ['screening' => $screening]);
-    }
+{
+    // Obtenha os tickets associados ao screening específico
+    $tickets = $screening->tickets;
+
+    return view('tickets.buy', [
+        'screening' => $screening,
+        'tickets' => $tickets
+    ]);
+}
     
 }
