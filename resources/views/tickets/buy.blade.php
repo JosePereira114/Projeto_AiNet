@@ -50,11 +50,11 @@
                         Ticket
                     </h2>
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-300  mb-6">
-                        Click on "Payment" button to pay for the ticket.
+                        Click on "Add to Cart" button to add your tickes in cart.
                     </p>
                 </header>
 
-                <form method="POST" action="{{ route('courses.store') }}" enctype="multipart/form-data">
+                <form action="{{ route('cart.add',['screening'=>$screening])}}" enctype="multipart/form-data">
                     @csrf
                     <div class="mt-6 space-y-4">
                         @foreach($screening->theater->seats->groupBy('row') as $row => $seatsInRow)
@@ -69,7 +69,7 @@
                                     </div>
                                 @else
                                     <label>
-                                        <input type="checkbox" name="selected_seats[]" value="{{ $seat->id }}" class="seat_checkbox">
+                                        <input type="checkbox" name="seats[]" value="{{ $seat->id }}" class="seat_checkbox">
                                         <div class="seat">
                                             {{ $seat->seat_number }}
                                         </div>
@@ -80,7 +80,7 @@
                         @endforeach
                     </div>
                     <div class="flex mt-6">
-                        <x-button element="submit" type="dark" text="Payment" class="uppercase" />
+                        <x-button element="submit" type="dark" text="Add To Cart" class="uppercase" />
                     </div>
                 </form>
             </section>

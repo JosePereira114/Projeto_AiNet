@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Purchase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PurchaseController extends Controller
 {
@@ -61,5 +62,11 @@ class PurchaseController extends Controller
     public function destroy(Purchase $purchase)
     {
         //
+    }
+    public function getReceipt(Purchase $purchase){
+        if($purchase->receipt_pdf_filename){
+            return Storage::response('pdf_purchases/'.$purchase->receipt_pdf_filename);
+            //return Storage::download('pdf_purchases/'.$purchase->receipt_pdf_filename);
+        }
     }
 }

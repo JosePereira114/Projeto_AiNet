@@ -8,6 +8,7 @@ use app\Models\Customer;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use app\Models\Ticket;
+use Illuminate\Support\Facades\Storage;
 
 class Purchase extends Model
 {
@@ -36,5 +37,12 @@ class Purchase extends Model
     public function tickets(): HasMany
     {
         return $this->hasMany(Ticket::class, 'id', 'id');
+    }
+    public function getReceiptFullUrlAttribute(){
+        if($this->receipt_pdf_filename && Storage::exists('receipts/' . $this->receipt_pdf_filename)){
+            return route('purchase.receipt');
+        }else{
+            return null;
+        }
     }
 }

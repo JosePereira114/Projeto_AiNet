@@ -14,6 +14,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\TheaterController;
 use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\UserController;
 use App\Models\Student;
 use App\Models\Genre;
 
@@ -24,6 +25,9 @@ Route::get('/', function () {
 Route::get('/', function () {
     return view('home');
 })->middleware(['auth', 'verified'])->name('home');
+
+
+Route::patch('users/{user}/upadteBlocked', [UserController::class, 'updateBlocked'])->name('users.updateBlocked');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -111,7 +115,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::resource('administratives', AdministrativeController::class);
 
     // Add a discipline to the cart:
-    Route::post('cart/{discipline}', [CartController::class, 'addToCart'])
+    Route::post('cart/{screening}', [CartController::class, 'addToCart'])
         ->name('cart.add');
     // Remove a discipline from the cart:
     Route::delete('cart/{discipline}', [CartController::class, 'removeFromCart'])

@@ -41,6 +41,11 @@ class TicketController extends Controller
         //
     }
 
+    public function validate(Request $request)
+    {
+        //validar o ticket
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
