@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 class MovieController extends Controller
@@ -112,12 +114,50 @@ class MovieController extends Controller
     public function destroy(Movie $movie)
     {
         try {
-            $url = route('movies.show', ['movie' => $movie]);
+            $url = route('movies.show', ['movie' => $movie]);~
+            $totalGenres = DB::scalar('select count(*) from genres where movie = ?', [$movie->id]);
+            $totalScreenings=$movie->screenings()->count();
+            if($totalGenres==0&&$totalScreenings==0){
+                $movie->delete();
+                if($movie->imageExists){
+                    Storage::delete("public/poster/{$movie->getImageFileName()}");
+                }
+                $alertType='success';
+                $alertMsg = "Movie <a href='$url'><u>{$movie->title}</u></a> has been deleted successfully!";
+            }else{
+                $alertType='warning';
+                $genresStr = match(true){
+                    $totalGenres<=0=>"",
+                    $totalGenres==1=>"there is 1 genre enrolled in this movie",
+                    $totalGenres> 1 =>"there are $totalGenres genres enrolled in this movie"
+                };
+                $screeningsStr = match(true){
+                    $totalScreenings<=0=>"",
+                    $totalScreenings==1=>"there is 1 screening enrolled in this movie",
+                    $totalScreenings> 1 =>"there are $totalScreenings screenings enrolled in this movie"
+                };
+                $justification = $genresStr.($totalGenres>0&&$totalScreenings>0?" and ":"").$screeningsStr;
+                $alertMsg="Movie <a href='$url'><u>{$movie->title}</u></a> could not be deleted because $justification.";
+            }
+                
+            
         } catch (\Exception $error) {
-            $htmlMessage = "Movie <a href='$url'><u>{$movie->title}</u></a> has been deleted successfully!";
-            return redirect()->route('movies.index')
-                ->with('alert-type', 'success')
-                ->with('alert-msg', $htmlMessage);
+            $alertType = 'danger';
+            $alertMsg = "It was not possible to delete the Movie
+                          <a href='$url'><u>{$movie->title}</u></a>
+                          because there was an error with the operation!.";
         }
+        return redirect()->route('movies.index')
+            ->with('alert-type', $alertType)
+            ->with('alert-msg', $alertMsg);
+    }
+    public function destroyImage(Movie $movie): RedirectResponse
+    {
+        if ($movie->imageExists) {
+            Storage::delete("public/posters/{$movie->getImageFileName()}");
+        }
+        return redirect()->back()
+            ->with('alert-type', 'success')
+            ->with('alert-msg', "Image of course {$movie->name} has been deleted.");
     }
 }

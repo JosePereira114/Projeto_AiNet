@@ -27,7 +27,10 @@ class Movie extends Model
         'deleted_at',
     ];
 
-
+    public function getImageExistsAttribute()
+    {
+        return Storage::exists("public/posters/{$this->poster_filename}");
+    }
 
     public function getFileNameAttribute()
     {

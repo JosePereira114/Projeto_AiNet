@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\Movies;
+namespace App\View\Components\Users;
 
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -12,7 +12,7 @@ class Table extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public object $movies,
+        public object $users,
         public bool $showView = true,
         public bool $showEdit = true,
         public bool $showDelete = true,
@@ -26,6 +26,6 @@ class Table extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.movies.table');
+        return view('components.users.table');
     }
 }

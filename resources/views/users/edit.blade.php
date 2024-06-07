@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('header-title', $movie->title)
+@section('header-title', 'User "' . $user->name . '"')
 
 @section('main')
 <div class="flex flex-col space-y-6">
@@ -9,14 +9,14 @@
             <section>
                 <div class="flex flex-wrap justify-end items-center gap-4 mb-4">
                     <x-button
-                        href="{{ route('movies.create', ['movie' => $movie]) }}"
+                        href="{{ route('users.create', ['user' => $user]) }}"
                         text="New"
                         type="success"/>
                     <x-button
-                        href="{{ route('movies.show', ['movie' => $movie]) }}"
+                        href="{{ route('users.show', ['user' => $user]) }}"
                         text="View"
                         type="info"/>
-                    <form method="POST" action="{{ route('movies.destroy', ['movie' => $movie]) }}">
+                    <form method="POST" action="{{ route('users.destroy', ['user' => $user]) }}">
                         @csrf
                         @method('DELETE')
                         <x-button
@@ -27,20 +27,18 @@
                 </div>
                 <header>
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Edit course "{{ $movie->title }}"
+                        Edit user "{{ $user->name }}"
                     </h2>
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-300  mb-6">
                         Click on "Save" button to store the information.
                     </p>
                 </header>
 
-                <form method="POST" action="{{ route('movies.update', ['movie' => $movie]) }}"
-                        enctype="multipart/form-data">
+                <form method="POST" action="{{ route('users.update', ['user' => $user]) }}"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <div class="mt-6 space-y-4">
-                        @include('movies.shared.fields', ['mode' => 'edit'])
-                    </div>
+                    @include('users.shared.fields', ['mode' => 'edit'])
                     <div class="flex mt-6">
                         <x-button element="submit" type="dark" text="Save" class="uppercase"/>
                         <x-button element="a" type="light" text="Cancel" class="uppercase ms-4"
@@ -51,10 +49,5 @@
         </div>
     </div>
 </div>
-<form class="hidden" id="form_to_delete_image"
-    method="POST" action="{{ route('movies.image.destroy', ['movie' => $movie]) }}">
-    @csrf
-    @method('DELETE')
-</form>
 @endsection
 

@@ -135,6 +135,7 @@ Route::middleware('auth', 'verified')->group(function () {
     });
     Route::get('courses/{course}/curriculum', [CourseController::class, 'showCurriculum'])->name('courses.curriculum');
 Route::get('movies/showcase', [MovieController::class, 'showCase'])->name('movies.showcase');
+Route::delete('movies/{movie}/photo', [TheaterController::class, 'destroyImage'])->name('movies.image.destroy');
 Route::get('/movies/{movie}/screenings', [MovieController::class, 'showScreening']);
 Route::resource('theaters',TheaterController::class);
 Route::delete('theaters/{theater}/photo', [TheaterController::class, 'destroyPhoto'])
@@ -145,7 +146,8 @@ Route::delete('theaters/{theater}/photo', [TheaterController::class, 'destroyPho
 /* ----- OTHER PUBLIC ROUTES ----- */
 //Course show is public.
 Route::resource('courses', CourseController::class)->only(['show']);
-Route::resource('movies', MovieController::class)->only(['show']);
+Route::resource('movies', MovieController::class);
+Route::resource('users', UserController::class);
 Route::resource('screenings', ScreeningController::class)->only(['show']);
 //Disciplines index and show are public
 Route::resource('disciplines', DisciplineController::class)->only(['index', 'show']);

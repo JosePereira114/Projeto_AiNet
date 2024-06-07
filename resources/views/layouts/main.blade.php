@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Department of Computer Engineering</title>
+    <title>CineMagic</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -34,19 +34,22 @@
                     <div id="menu-container" class="grow flex flex-col sm:flex-row items-stretch
                     invisible h-0 sm:visible sm:h-auto">
                         <!-- Menu Item: Movies -->
-                        <x-menus.menu-item content="Movies" href="{{ route('movies.showcase') }}" selected="{{ Route::currentRouteName() == 'movies.showcase'}}" />
+                        <x-menus.menu-item content="Movies" href="{{ route('movies.index') }}" selected="{{ Route::currentRouteName() == 'movies.index'}}" />
 
                         <!-- Menu Item: Curricula -->
                         <x-menus.submenu-full-width content="Curricula" selectable="1" selected="0" uniqueName="submenu_curricula">
 
                         </x-menus.submenu-full-width>
 
-                        <!-- Menu Item: Disciplines -->
-                        <x-menus.menu-item content="Disciplines" selectable="1" href="{{ route('disciplines.index') }}" selected="{{ Route::currentRouteName() == 'disciplines.index'}}" />
-
+                       
                         @auth
+                         <!-- Menu Item: Genres -->
+                         <x-menus.menu-item content="Genre" selectable="1" href="{{ route('genres.index') }}" selected="{{ Route::currentRouteName() == 'genres.index'}}" />
+
                         <!-- Menu Item: Teachers -->
-                        <x-menus.menu-item content="Teachers" selectable="1" href="{{ route('teachers.index') }}" selected="{{ Route::currentRouteName() == 'teachers.index'}}" />
+                        <x-menus.menu-item content="Theaters" selectable="1" href="{{ route('theaters.index') }}" selected="{{ Route::currentRouteName() == 'theaters.index'}}" />
+                        
+                        <x-menus.menu-item content="Users" selectable="1" href="{{ route('users.index') }}" selected="{{ Route::currentRouteName() == 'users.index'}}" />
 
                         <!-- Menu Item: Others -->
                         <x-menus.submenu selectable="0" uniqueName="submenu_others" content="More">

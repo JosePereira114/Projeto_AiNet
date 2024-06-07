@@ -131,6 +131,6 @@ class CourseController extends Controller
         return redirect()->back()
             ->with('alert-type', 'success')
             ->with('alert-msg', "Image of course {$course->name} has been deleted.");
-        return redirect()->back();
+    
     }
 }

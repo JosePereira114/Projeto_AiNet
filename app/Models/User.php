@@ -26,7 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'admin',
         'type',
         'gender',
-        'photo_url'
+        'photo_filename'
     ];
 
     /**
@@ -51,15 +51,30 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
-
-    public function getPhotoFullUrlAttribute()
+    public function getImageExistsAttribute()
     {
-        debug($this->photo_url);
+        return Storage::exists("public/photos/{$this->photo_filename}");
+    }
 
-        if ($this->photo_url && Storage::exists("public/photos/{$this->photo_url}")) {
-            return asset("storage/photos/{$this->photo_url}");
+    public function getFileNameAttribute()
+    {
+        return strtoupper(trim($this->photo_filename));
+    }
+
+    public function getImageUrlAttribute()
+    {
+        if ($this->photo_filename && Storage::exists("public/photos/{$this->photo_filename}")) {
+            return asset("storage/photoss/{$this->photo_filename}");
         } else {
             return asset("storage/photos/anonymous.png");
+        }
+    }
+    public function getPhotoFullUrlAttribute()
+    {
+        if ($this->photo_filename && Storage::exists("public/photos/{$this->photo_filename}")) {
+            return asset("storage/photos/{$this->photo_filename}");
+        } else {
+            return asset("img/no_img.png");
         }
     }
     
