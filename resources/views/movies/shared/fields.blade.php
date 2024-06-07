@@ -14,6 +14,14 @@ $readonly = $mode == 'show';
         <x-field.text-area name="synopsis" label="Synopsis" :readonly="$readonly" value="{{ old('synopsis', $movie->synopsis) }}" />
     </div>
     <div class="pb-6">
-
+    <x-field.image
+            name="photo_file"
+            label="Poster"
+            width="md"
+            :readonly="$readonly"
+            deleteTitle="Delete Photo"
+            :deleteAllow="($mode == 'edit') && ($movie->photo_filename)"
+            deleteForm="form_to_delete_photo"
+            :imageUrl="$movie->photoFullUrl"/>
     </div>
 </div>
