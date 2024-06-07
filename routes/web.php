@@ -15,6 +15,7 @@ use App\Http\Controllers\TheaterController;
 use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CustomerController;
 use App\Models\Student;
 use App\Models\Genre;
 
@@ -148,6 +149,7 @@ Route::delete('theaters/{theater}/photo', [TheaterController::class, 'destroyPho
 Route::resource('courses', CourseController::class)->only(['show']);
 Route::resource('movies', MovieController::class);
 Route::resource('users', UserController::class);
+Route::resource('customers', CustomerController::class);
 Route::resource('screenings', ScreeningController::class)->only(['show']);
 //Disciplines index and show are public
 Route::resource('disciplines', DisciplineController::class)->only(['index', 'show']);
