@@ -149,5 +149,6 @@ Route::resource('movies', MovieController::class)->only(['show']);
 Route::resource('screenings', ScreeningController::class)->only(['show']);
 //Disciplines index and show are public
 Route::resource('disciplines', DisciplineController::class)->only(['index', 'show']);
+Route::resource('genres', GenreController::class);
 
 require __DIR__ . '/auth.php';
