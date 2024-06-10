@@ -14,14 +14,14 @@
                     type="success"/>
             </div>
             <div class="font-base text-sm text-gray-700 dark:text-gray-300">
-                <x-customers.table :customers="$allCustomers"
+                <x-customers.table :customers="$customers"
                     :showView="true"
                     :showEdit="true"
                     :showDelete="true"
                     />
             </div>
             <div class="mt-4">
-                {{ $allCustomers->links() }}
+                {{ $customers->links() }}
             </div>
         </div>
     </div>

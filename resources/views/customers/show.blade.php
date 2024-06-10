@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('header-title', $customer->name)
+@section('header-title', $customer->user->name)
 
 @section('main')
 <div class="flex flex-col space-y-6">
@@ -27,7 +27,7 @@
                 </div>
                 <header>
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Customer "{{ $customer->name }}"
+                        Customer "{{ $customer->user->name }}"
                     </h2>
                 </header>
                 <div class="mt-6 space-y-4">
