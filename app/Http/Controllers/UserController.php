@@ -28,7 +28,7 @@ class UserController extends Controller
         return view('users.create')->with('user',$newUser);
     }
 
-    public function store(UserFormRequest $request): RedirectResponse
+    public function store(UserFormRequest $request): RerectResponse
     {
         $validatedData=$request->validated();
         $validatedData['password'] = bcrypt('123');

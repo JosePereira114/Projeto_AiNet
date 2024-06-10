@@ -24,7 +24,7 @@ class CustomerFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nif' => 'sometimes|number|max:9|unique:customers,',
+            'nif' => 'sometimes|int|max:999999999|min:100000000|unique:customers,',
             'payment_type' => 'string|max:20',
             'payment_reference' => 'sometimes|string|max:20', 
         ];

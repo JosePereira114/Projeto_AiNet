@@ -25,8 +25,8 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $newCostumer = new Customer();
-        return view('customers.create',compact('newCostumer'));
+        $newCustomer = new Customer();
+        return view('customers.create')->with('customer',$newCustomer);
     }
 
     /**
@@ -36,7 +36,7 @@ class CustomerController extends Controller
     {
         $newCustomer = Customer::create($request->validated());
         $url = route('customers.show', ['customer' => $newCustomer]);
-        $htmlMessage = "Customer <a href='$url'><u>{$newCustomer->name}</u></a> has been created successfully!";
+        $htmlMessage = "Customer <a href='$url'><u>{$newCustomer->user->name}</u></a> has been created successfully!";
         return redirect()->route('customers.index')
         ->with('alert-type', 'success')
         ->with('alert-msg', $htmlMessage);
