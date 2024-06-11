@@ -8,7 +8,9 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use App\Models\Discipline;
+use App\Models\Seat;
 use App\Models\Student;
+use App\Models\Screening;
 
 class CartController extends Controller
 {
@@ -18,29 +20,31 @@ class CartController extends Controller
         return view('cart.show', compact('cart'));
     }
 
-    public function addToCart(Request $request, Discipline $discipline): RedirectResponse
+    public function addToCart(Request $request, Screening $screening): RedirectResponse
     {
         $cart = session('cart', null);
+        $seats = $request->input('seats', []);
+        $numSeats = count($seats);
         if (!$cart) {
-            $cart = collect([$discipline]);
+            $cart = collect([$seats]);
             $request->session()->put('cart', $cart);
         } else {
-            if ($cart->firstWhere('id', $discipline->id)) {
+            if ($cart->firstWhere('id', $seats)) {
                 $alertType = 'warning';
-                $url = route('disciplines.show', ['discipline' => $discipline]);
-                $htmlMessage = "Discipline <a href='$url'>#{$discipline->id}</a>
-                <strong>\"{$discipline->name}\"</strong> was not added to the cart because it is already there!";
+                $url = route('screenings.show', ['screening' => $screening]);
+                $htmlMessage = "#{$numSeats} seats in <a href='$url'></a>
+                <strong>\"{$screening->id}\"</strong> was not added to the cart because it is already there!";
                 return back()
                     ->with('alert-msg', $htmlMessage)
                     ->with('alert-type', $alertType);
             } else {
-                $cart->push($discipline);
+                $cart->push($screening);
             }
         }
         $alertType = 'success';
-        $url = route('disciplines.show', ['discipline' => $discipline]);
-        $htmlMessage = "Discipline <a href='$url'>#{$discipline->id}</a>
-                <strong>\"{$discipline->name}\"</strong> was added to the cart.";
+        $url = route('screenings.show', ['screening' => $screening]);
+        $htmlMessage = "#{$numSeats} seats in <a href='$url'></a>
+                <strong>\"{$screening->id}\"</strong> was added to the cart.";
         return back()
             ->with('alert-msg', $htmlMessage)
             ->with('alert-type', $alertType);

@@ -54,7 +54,7 @@
                     </p>
                 </header>
 
-                <form action="{{ route('cart.add',['screening'=>$screening])}}" enctype="multipart/form-data">
+                <form action="{{ route('cart.add',['screening'=>$screening,'seats'=>'seats[]'])}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mt-6 space-y-4">
                         @foreach($screening->theater->seats->groupBy('row') as $row => $seatsInRow)

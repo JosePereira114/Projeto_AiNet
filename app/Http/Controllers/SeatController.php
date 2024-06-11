@@ -12,7 +12,8 @@ class SeatController extends Controller
      */
     public function index()
     {
-        //
+       $seats = Seat::with('theater')->get();
+         return view('seats.index', compact('seats'));
     }
 
     /**
