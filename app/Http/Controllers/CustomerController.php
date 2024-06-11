@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -17,7 +18,7 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::paginate(10);
-        return view('customers.index',compact('customers'));
+        return view('customers.index', compact('customers'));
     }
 
     /**
@@ -26,7 +27,7 @@ class CustomerController extends Controller
     public function create()
     {
         $newCustomer = new Customer();
-        return view('customers.create')->with('customer',$newCustomer);
+        return view('customers.create')->with('customer', $newCustomer);
     }
 
     /**
@@ -34,12 +35,18 @@ class CustomerController extends Controller
      */
     public function store(CustomerFormRequest $request): RedirectResponse
     {
-        $newCustomer = Customer::create($request->validated());
+        $userData = $request->only(['name', 'email', 'photo_filename']);
+        $userData['password'] = bcrypt($request->input('password'));
+        $userData['type'] = 'C';
+        $newUser = User::create($userData);
+        $costumerData = $request->except(['name', 'email', 'password', 'photo_filename']);
+        $costumerData['id'] = $newUser->id;
+        $newCustomer = Customer::create($costumerData);
         $url = route('customers.show', ['customer' => $newCustomer]);
         $htmlMessage = "Customer <a href='$url'><u>{$newCustomer->user->name}</u></a> has been created successfully!";
         return redirect()->route('customers.index')
-        ->with('alert-type', 'success')
-        ->with('alert-msg', $htmlMessage);
+            ->with('alert-type', 'success')
+            ->with('alert-msg', $htmlMessage);
     }
 
     /**
@@ -47,7 +54,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        return view('customers.show',compact('customer'));
+        return view('customers.show', compact('customer'));
     }
 
     /**
@@ -55,7 +62,7 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer): View
     {
-        return view('customers.edit',compact('customer'));
+        return view('customers.edit', compact('customer'));
     }
 
     /**
@@ -67,8 +74,8 @@ class CustomerController extends Controller
         $url = route('customers.show', ['customer' => $customer]);
         $htmlMessage = "Customer <a href='$url'><u>{$customer->name}</u></a> has been updated successfully!";
         return redirect()->route('customers.index')
-        ->with('alert-type', 'success')
-        ->with('alert-msg', $htmlMessage);
+            ->with('alert-type', 'success')
+            ->with('alert-msg', $htmlMessage);
     }
 
     /**
@@ -76,22 +83,16 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        try{
+        try {
             $url = route('customers.show', ['customer' => $customer]);
-            $totalUser = $customer->users->count();
-            if($totalUser > 0){
-                return redirect()->route('customers.index')
-                ->with('alert-type', 'danger')
-                ->with('alert-msg', "Customer <u>$customer->name</u> cannot be deleted because it has related user");
-            }
             $customer->delete();
             return redirect()->route('customers.index')
-            ->with('alert-type', 'success')
-            ->with('alert-msg', "Customer <u>$customer->name</u> has been deleted successfully");
-        }catch(\Exception $e){
+                ->with('alert-type', 'success')
+                ->with('alert-msg', "Customer <u>$customer->name</u> has been deleted successfully");
+        } catch (\Exception $e) {
             return redirect()->route('customers.index')
-            ->with('alert-type', 'danger')
-            ->with('alert-msg', "Customer <u>$customer->name</u> cannot be deleted because it has related data");
+                ->with('alert-type', 'danger')
+                ->with('alert-msg', "Customer <u>$customer->name</u> cannot be deleted because it has related data");
         }
     }
 }

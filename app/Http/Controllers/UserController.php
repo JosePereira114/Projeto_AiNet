@@ -28,7 +28,7 @@ class UserController extends Controller
         return view('users.create')->with('user',$newUser);
     }
 
-    public function store(UserFormRequest $request): RerectResponse
+    public function store(UserFormRequest $request): RedirectResponse
     {
         $validatedData=$request->validated();
         $validatedData['password'] = bcrypt('123');
@@ -57,6 +57,7 @@ class UserController extends Controller
 
     public function destroy(User $user): RedirectResponse
     {
+
         try{
             $user->delete();
             return redirect()->route('users.index')

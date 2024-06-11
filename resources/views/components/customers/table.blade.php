@@ -5,6 +5,8 @@
             <th class="px-2 py-2 text-left">Name</th>
             <th class="px-2 py-2 text-left">Email</th>
             <th class="px-2 py-2 text-left">NIF</th>
+            <th class="px-2 py-2 text-left">Payment Type</th>
+            <th class="px-2 py-2 text-left">Payment Reference</th>
             @if($showView)
                 <th></th>
             @endif
@@ -22,6 +24,8 @@
                 <td class="px-2 py-2 text-left">{{ $customer->user->name }}</td>
                 <td class="px-2 py-2 text-left">{{ $customer->user->email }}</td>
                 <td class="px-2 py-2 text-left">{{ $customer->nif }}</td>
+                <td class="px-2 py-2 text-left">{{ $customer->payment_type }}</td>
+                <td class="px-2 py-2 text-left">{{ $customer->payment_ref }}</td>
                 @if($showView)
                     <td>
                         <x-table.icon-show class="ps-3 px-0.5"

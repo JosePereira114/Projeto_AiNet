@@ -21,12 +21,16 @@ class CustomerFormRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'nif' => 'sometimes|int|max:999999999|min:100000000|unique:customers,',
-            'payment_type' => 'string|max:20',
-            'payment_reference' => 'sometimes|string|max:20', 
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'nullable|string|min:3',
+        'nif' => 'nullable|integer|digits:9|unique:customers',
+        'payment_type' => 'required|string|in:VISA,PAYPAL,MBWAY',
+        'type' => 'string|in:C', // Adicione outras opções se necessário
+        'photo_filename' => 'nullable|string|max:255', // ou outros critérios de validação para foto
         ];
     }
 }
