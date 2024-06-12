@@ -14,5 +14,7 @@ class Configuration extends Model
         'custom',        
     ];
     public $timestmap = false;
+
+    public $table='configuration';
     
 }

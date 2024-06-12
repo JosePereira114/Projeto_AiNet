@@ -22,7 +22,11 @@ class CartConfirmationFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'student_number' => 'required|exists:students,number'
+            'customer_name' => 'required|string|max:255',
+        'customer_email' => 'required|email|max:255',
+        'customer_nif' => 'required|numeric',
+        'payment_type' => 'required|string|in:VISA,PAYPAL,MBWAY',
+        'payment_ref' => 'required|string|max:255',
         ];
     }
 }

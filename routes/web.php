@@ -41,6 +41,7 @@ require __DIR__.'/auth.php';
 /* ----- PUBLIC ROUTES ----- */
 Route::get('/', [MovieController::class, 'showMoment'])->name('home');
 Route::get('courses/showcase', [CourseController::class, 'showcase'])->name('courses.showcase');
+Route::get('tickets/showcase', [TicketController::class, 'showcase'])->name('tickets.showcase');
 Route::get('tickets/{screening}', [TicketController::class, 'buy'])->name('tickets.buy');
 Route::get('/movies/{movie}/selectscreening', [MovieController::class, 'showMomentScreenings'])->name('movies.showMomentScreenings');
 /* ----- Non-Verified users ----- */
@@ -119,8 +120,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('cart/{screening}', [CartController::class, 'addToCart'])
         ->name('cart.add');
     // Remove a discipline from the cart:
-    Route::delete('cart/{id}', [CartController::class, 'removeFromCart'])
-        ->name('cart.remove');
+    Route::delete('cart/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
     // Show the cart:
     Route::get('cart', [CartController::class, 'show'])->name('cart.show');
     // Confirm (store) the cart and save disciplines registration on the database:

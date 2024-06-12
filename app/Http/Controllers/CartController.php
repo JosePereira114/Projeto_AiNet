@@ -64,7 +64,7 @@ class CartController extends Controller
                 $htmlMessage = "Seat was not removed from the cart.";
             }else{
                 $alertType = 'success';
-                $htmlMessage = "Seat ".$cart["id"]["seat"]->row.$cart." was removed from the cart.";
+                $htmlMessage = "Seat ".$cart[$id]['seat']->row.$cart[$id]['seat']->seat_number." was removed from the cart.";
                 unset($cart[$id]);
                 session(['cart' => $cart]);
             }
@@ -72,7 +72,7 @@ class CartController extends Controller
         return back()
             ->with('alert-msg', $htmlMessage)
             ->with('alert-type', $alertType);
-    }
+    }   
 
     public function destroy(Request $request): RedirectResponse
     {
@@ -99,9 +99,17 @@ class CartController extends Controller
             $configuration=Configuration::first();
             $basicPrice=$configuration->ticket_price;
             $totalPrice=0;
+            $insertTickets = []; 
             $totalPrice = 0; // Initialize the $totalPrice variable
             foreach($cart as $item){
-                if($item['screening']->tickets()->where('seat_id',$item['seat'])->count()==0&&$item['screening']->date>Carbon::today()||$item['screening']->date== Carbon::today()&&$item['screening']->time>=Carbon::now()->addMinutes(5)->format('H:i:s')){
+                $screening = $item['screening'];
+                $seat = $item['seat'];
+
+                $noTickets = $screening->tickets()->where('seat_id', $seat)->count() == 0;
+                $isFutureDate = $screening->date > Carbon::today()->format('Y-m-d');
+                $isTodayAndValidTime = $screening->date == Carbon::today()->format('Y-m-d') && $screening->start_time >= Carbon::now()->addMinutes(5)->format('H:i:s');
+            
+                if ($noTickets && ($isFutureDate || $isTodayAndValidTime)) {   
                     $price = Auth::user() ? $basicPrice - $configuration->registered_customer_ticket_discount : $basicPrice;
                     $insertTickets[]=['screening_id'=>$item['screening']->id, 
                     'seat_id'=>$item['seat']->id, 
@@ -134,12 +142,15 @@ class CartController extends Controller
                         $ticket= new Ticket();
                         $ticket->fill($t);
                         $ticket->purchase_id=$purchase->id;
+                        $ticket->screening_id=$t['screening_id'];
+                        $ticket->seat_id=$t['seat_id'];
                         $ticket->qrcode_url=route('tickets.showcase',['ticket'=>$ticket]);
                         $ticket->save();
                     }
-                    $purchase->receipt_pdf_filename=PDFController::generateReceipt($purchase);
+                    //$purchase->receipt_pdf_filename=PDFController::generateReceipt($purchase);
                     $purchase->save();
                 });
+                $request->session()->forget('cart');
             }
         }
         if($ignored==0){

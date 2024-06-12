@@ -1,4 +1,5 @@
 <div {{ $attributes }}>
+    
     <table class="table-auto border-collapse">
         <thead>
         <tr class="border-b-2 border-b-gray-400 dark:border-b-gray-500 bg-gray-100 dark:bg-gray-800">
@@ -59,7 +60,7 @@
                     <td>
                         <x-table.icon-minus class="px-0.5"
                             method="delete"
-                            action="{{ route('cart.remove', ['id' => $attributes]) }}"/>
+                            action="{{ route('cart.remove', ['id' => $seat['screening']->id . '_' . $seat['seat']->id]) }}"/>
                     </td>
                 @endif
             </tr>
