@@ -14,7 +14,8 @@ class TicketController extends Controller
      */
     public function index()
     {
-        //
+        $tickets = Ticket::orderBy('created_at', 'desc')->paginate(10);
+        return view('tickets.index', compact('tickets'));
     }
 
     /**
@@ -22,7 +23,8 @@ class TicketController extends Controller
      */
     public function create()
     {
-        //
+        $ticket = new Ticket();
+        return view('tickets.create', compact('ticket'));
     }
 
     /**
@@ -30,7 +32,12 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newTicket = Ticket::create($request->validated());
+        $url = route('tickets.show', ['ticket' => $newTicket]);
+        $htmlMessage = "Ticket <a href='$url'><u>{$newTicket->name}</u></a> has been created successfully!";
+        return redirect()->route('tickets.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', $htmlMessage);
     }
 
     /**
@@ -38,7 +45,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        //
+        return view('tickets.show', compact('ticket'));
     }
 
     public function validate(Request $request)
@@ -51,7 +58,7 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        //
+        return view('tickets.edit', compact('ticket'));
     }
 
     /**
@@ -59,7 +66,12 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        //
+        $ticket->update($request->validated());
+        $url = route('tickets.show', ['ticket' => $ticket]);
+        $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> has been updated successfully!";
+        return redirect()->route('tickets.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', $htmlMessage);
     }
 
     /**
@@ -67,17 +79,27 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        //
+        try {
+            $url = route('tickets.show', ['ticket' => $ticket]);
+            $totalPurchase = $ticket->purchase()->count();
+            $totalSeat = $ticket->seat()->count();
+            $totalScreening = $ticket->screening()->count();
+            if ($totalPurchase || $totalSeat || $totalScreening) {
+                $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> cannot be deleted because it is associated with a purchase, seat or screening";
+                return redirect()->route('tickets.index')
+                    ->with('alert-type', 'danger')
+                    ->with('alert-msg', $htmlMessage);
+            } else {
+                $ticket->delete();
+                $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> has been deleted successfully!";
+                return redirect()->route('tickets.index')
+                    ->with('alert-type', 'success')
+                    ->with('alert-msg', $htmlMessage);
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('tickets.index')
+                ->with('alert-type', 'danger')
+                ->with('alert-msg', 'Ticket cannot be deleted');
+        }
     }
-    public function buy(Screening $screening)
-{
-    // Obtenha os tickets associados ao screening específico
-    $tickets = $screening->tickets;
-
-    return view('tickets.buy', [
-        'screening' => $screening,
-        'tickets' => $tickets
-    ]);
-}
-    
 }

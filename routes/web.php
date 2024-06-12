@@ -16,6 +16,7 @@ use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PurchaseController;
 use App\Models\Student;
 use App\Models\Genre;
 
@@ -42,7 +43,7 @@ require __DIR__.'/auth.php';
 Route::get('/', [MovieController::class, 'showMoment'])->name('home');
 Route::get('courses/showcase', [CourseController::class, 'showcase'])->name('courses.showcase');
 Route::get('tickets/showcase', [TicketController::class, 'showcase'])->name('tickets.showcase');
-Route::get('tickets/{screening}', [TicketController::class, 'buy'])->name('tickets.buy');
+Route::get('purchases/{screening}', [PurchaseController::class, 'buy'])->name('tickets.buy');
 Route::get('/movies/{movie}/selectscreening', [MovieController::class, 'showMomentScreenings'])->name('movies.showMomentScreenings');
 /* ----- Non-Verified users ----- */
 Route::middleware('auth')->group(function () {
@@ -151,6 +152,7 @@ Route::resource('movies', MovieController::class);
 Route::resource('users', UserController::class);
 Route::resource('customers', CustomerController::class);
 Route::resource('screenings', ScreeningController::class)->only(['show']);
+Route::resource('tickets', TicketController::class);
 //Disciplines index and show are public
 Route::resource('disciplines', DisciplineController::class)->only(['index', 'show']);
 Route::resource('genres', GenreController::class);

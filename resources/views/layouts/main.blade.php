@@ -35,12 +35,6 @@
                     invisible h-0 sm:visible sm:h-auto">
                         <!-- Menu Item: Movies -->
                         <x-menus.menu-item content="Movies" href="{{ route('movies.index') }}" selected="{{ Route::currentRouteName() == 'movies.index'}}" />
-
-                        <!-- Menu Item: Curricula -->
-                        <x-menus.submenu-full-width content="Curricula" selectable="1" selected="0" uniqueName="submenu_curricula">
-
-                        </x-menus.submenu-full-width>
-
                        
                         @auth
                          <!-- Menu Item: Genres -->
@@ -52,8 +46,11 @@
                         <x-menus.menu-item content="Users" selectable="1" href="{{ route('users.index') }}" selected="{{ Route::currentRouteName() == 'users.index'}}" />
                         
                         <x-menus.menu-item content="Customers" selectable="1" href="{{ route('customers.index') }}" selected="{{ Route::currentRouteName() == 'customers.index'}}" />
+
+                        <x-menus.menu-item content="Tickets" selectable="1" href="{{ route('tickets.index') }}" selected="{{ Route::currentRouteName() == 'tickets.index'}}" />
+ 
                         <!-- Menu Item: Others -->
-                        <x-menus.submenu selectable="0" uniqueName="submenu_others" content="More">
+                        <!--<x-menus.submenu selectable="0" uniqueName="submenu_others" content="More">
                             @can('viewAny', App\Models\Student::class)
                             <x-menus.submenu-item content="Students" selectable="0" href="{{ route('students.index') }}" />
                             @endcan
@@ -61,7 +58,7 @@
                             <hr>
                             <x-menus.submenu-item content="Departments" selectable="0" href="{{ route('departments.index') }}" />
                             <x-menus.submenu-item content="Course Management" href="{{ route('courses.index') }}" />
-                        </x-menus.submenu>
+                        </x-menus.submenu>-->
                         @endauth
 
                         <div class="grow"></div>
@@ -82,10 +79,6 @@
                                     {{ Auth::user()->name ??null}}
                                 </div>
                                 </x-slot>
-                                <x-menus.submenu-item content="My Disciplines" selectable="0" href="#" />
-                                <x-menus.submenu-item content="My Teachers" selectable="0" href="#" />
-                                <x-menus.submenu-item content="My Students" selectable="0" href="#" />
-                                <hr>
                                 <x-menus.submenu-item content="Profile" selectable="0" href="{{ route('profile.edit') }}" />
                                 <hr>
                                 <form id="form_to_logout_from_menu" method="POST" action="{{ route('logout') }}" class="hidden">
@@ -128,7 +121,7 @@
         <header class="bg-white dark:bg-gray-900 shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <h4 class="mb-1 text-base text-gray-500 dark:text-gray-400 leading-tight">
-                    CineProject
+                    CineMagic
                 </h4>
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                     @yield('header-title')
