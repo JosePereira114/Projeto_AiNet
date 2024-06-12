@@ -2,31 +2,28 @@
 
 namespace App\View\Components\Seats;
 
-use Closure;
-use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class Table extends Component
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct(
-        public object $seats,
-        public bool $showView = true,
-        public bool $showEdit = true,
-        public bool $showDelete = true,
-        public bool $showAddToCart = false,
-        public bool $showRemoveFromCart = false,
-    )
+    public $seats;
+    public $showView;
+    public $showEdit;
+    public $showDelete;
+    public $showAddToCart;
+    public $showRemoveFromCart;
+
+    public function __construct(array $seats, $showView, $showEdit, $showDelete, $showAddToCart, $showRemoveFromCart)
     {
-        //
+        $this->seats = $seats;
+        $this->showView = $showView;
+        $this->showEdit = $showEdit;
+        $this->showDelete = $showDelete;
+        $this->showAddToCart = $showAddToCart;
+        $this->showRemoveFromCart = $showRemoveFromCart;
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): View|Closure|string
+    public function render()
     {
         return view('components.seats.table');
     }

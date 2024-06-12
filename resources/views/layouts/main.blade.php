@@ -68,7 +68,7 @@
 
                         <!-- Menu Item: Cart -->
                         @if (session('cart'))
-                        <x-menus.cart :href="route('cart.show')" selectable="1" selected="{{ Route::currentRouteName() == 'cart.show'}}" :total="session('cart')->count()" />
+                        <x-menus.cart :href="route('cart.show')" selectable="1" selected="{{ Route::currentRouteName() == 'cart.show'}}" :total="count(session('cart'))" />
                         @endif
 
                         @auth

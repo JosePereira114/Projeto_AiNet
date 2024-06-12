@@ -26,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('admin', function (User $user) {
             return $user->type === 'A';
         });
+        Gate::define('use-cart', function (User $user) {
+            return $user->type === 'C' || $user==null;
+        });
 
         Gate::define('custumer', function (User $user) {
             return $user->type === 'C';
