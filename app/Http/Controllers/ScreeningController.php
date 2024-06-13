@@ -37,7 +37,8 @@ class ScreeningController extends Controller
         $validatedData = $request->validated();
 
         // Inclui o campo 'date' no array de dados a serem criados
-        $validatedData['date'] = $request->input('date'); // Substitua 'date' pelo nome correto do campo
+        $validatedData['date'] = "2024-06-14"; // Substitua 'date' pelo nome correto do campo
+
 
         // Cria um novo Screening com os dados validados
         $newScreening = Screening::create($validatedData);

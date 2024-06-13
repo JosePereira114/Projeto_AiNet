@@ -12,6 +12,7 @@ class Screening extends Model
 {
     use HasFactory;
     protected $fillable=[
+        'date',
         'start_time',
         'end_time',
         'movie_id',
@@ -19,6 +20,8 @@ class Screening extends Model
         'custom',
     ];
     protected $dates = ['date'];
+
+    
 
     public function tickets():HasMany{
         return $this->hasMany(Ticket::class);

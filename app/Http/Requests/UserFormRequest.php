@@ -46,7 +46,7 @@ class UserFormRequest extends FormRequest
                 Rule::unique('users', 'email')->ignore($this->user?->id)
             ],
             'bloked' => 'string|max:20',
-            'type' => 'required|string',
+            'type' => 'required|in:A,E',
             'photo_filename' => 'sometimes|image|max:4096', // maxsize = 4Mb
         ];
     }

@@ -13,6 +13,9 @@
             @if($showDelete)
                 <th></th>
             @endif
+            @if($showBlock)
+                <th></th>
+            @endif
         </tr>
         </thead>
         <tbody>
@@ -36,6 +39,12 @@
                     <td>
                         <x-table.icon-delete class="px-0.5"
                         action="{{ route('users.destroy', ['user' => $user]) }}"/>
+                    </td>
+                @endif
+                @if($showBlock)
+                    <td>
+                        <x-table.icon-block class="px-0.5" :blocked="$user->blocked"
+                        action="{{ route('users.block', ['user' => $user]) }}"/>
                     </td>
                 @endif
             </tr>

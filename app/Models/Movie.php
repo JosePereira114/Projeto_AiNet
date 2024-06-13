@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Relations\HasMany; 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Genre;
 use App\Models\Screening;
+use Carbon\Carbon;
 
 class Movie extends Model
 {
@@ -26,6 +27,27 @@ class Movie extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function getScreeningsMomentAttribute()
+    {
+        
+            $now = Carbon::now();
+            $endDate = Carbon::now()->addWeeks(2)->endOfDay();
+        
+            return $this->screenings()
+                ->where(function($query) use ($now, $endDate) {
+                    $query->where('date', '>', $now->toDateString())
+                          ->orWhere(function($query) use ($now) {
+                              $query->where('date', '=', $now->toDateString())
+                                    ->where('start_time', '>', $now->toTimeString());
+                          })
+                          ->where('date', '<=', $endDate->toDateString())
+                          ->orderBy('date')
+                          ->orderBy('start_time');
+                          
+                })
+                ->get();
+    }
 
     public function getImageExistsAttribute()
     {
@@ -53,7 +75,7 @@ class Movie extends Model
         } else {
             return asset("storage/posters/no_poster_1.png");
         }
-    } 
+    }
 
     public function genre(): BelongsTo
     {

@@ -31,7 +31,7 @@ class UserController extends Controller
     public function store(UserFormRequest $request): RedirectResponse
     {
         $validatedData=$request->validated();
-        $validatedData['password'] = bcrypt('123');
+        $validatedData['password'] = bcrypt($validatedData['password']);
         $newUser = User::create($validatedData);
         $url = route('users.show', ['user' => $newUser]);
         $htmlMessage = "User <a href='$url'><u>{$newUser->name}</u></a> has been created successfully!";
