@@ -55,9 +55,9 @@ Route::middleware('auth')->group(function () {
 /*----- Géneros -----*/
 
 //Route::get('genres/create', [GenreController::class, 'create'])->name('genres.create');
-Route::get('genres/create', [GenreController::class, 'create'])
-->name('genres.create')
-->can('create', Genre::class);
+//Route::get('genres/create', [GenreController::class, 'create'])
+//->name('genres.create')
+//->can('create', Genre::class);
 
 Route::post('genres', [GenreController::class, 'store'])->name('genres.store');
 

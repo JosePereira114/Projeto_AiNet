@@ -7,12 +7,20 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\GenreFormRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class GenreController extends Controller
+use App\Http\Controllers\Controller;
+
+class GenreController extends \Illuminate\Routing\Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Genre::class);
+    }
+
+
     public function index()
     {
         $allGenres = Genre::orderBy('name')->paginate(20);
@@ -84,6 +92,10 @@ class GenreController extends Controller
      */
     public function destroy(Genre $genre)
     {
+        //if(Auth::user()->user()->cannot('delete', $genre)){              metodo para os destrois recomendados pela stora
+           // abort(403);
+        //}
+
         try{
             $url = route('genres.show', ['genre' => $genre]);
             $totalMovies = $genre->movies->count();
