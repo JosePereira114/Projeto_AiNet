@@ -151,7 +151,7 @@ Route::resource('courses', CourseController::class)->only(['show']);
 Route::resource('movies', MovieController::class);
 Route::resource('users', UserController::class);
 Route::resource('customers', CustomerController::class);
-Route::resource('screenings', ScreeningController::class)->only(['show']);
+Route::resource('screenings', ScreeningController::class);
 Route::resource('tickets', TicketController::class);
 //Disciplines index and show are public
 Route::resource('disciplines', DisciplineController::class)->only(['index', 'show']);
