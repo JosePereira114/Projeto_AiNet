@@ -87,9 +87,10 @@ class UserController extends Controller
     }
     public function updateBlocked(User $user){
         $user->blocked=!$user->blocked;
+        $user->save();
         $msg = $user->blocked ? 'blocked' : 'unblocked';
         $htmlMessage = "User <u>$user->name</u> has been $msg";
-        return redirect()->back()
+        return redirect()->route('users.index')
         ->with('alert-type','success')
         ->with('alert-message',$htmlMessage);
     }

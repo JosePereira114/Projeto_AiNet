@@ -94,6 +94,15 @@ class ScreeningController extends Controller
      */
     public function destroy(Screening $screening)
     {
-        //
+        try {
+            $screening->delete();
+            return redirect()->route('screenings.index')
+                ->with('alert-type', 'success')
+                ->with('alert-msg', "Screening <u>$screening->screening_time</u> has been deleted successfully");
+        } catch (\Exception $e) {
+            return redirect()->route('screenings.index')
+                ->with('alert-type', 'danger')
+                ->with('alert-msg', "Screening <u>$screening->screening_time</u> cannot be deleted because it has related data");
+        }
     }
 }
