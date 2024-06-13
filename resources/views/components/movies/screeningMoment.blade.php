@@ -1,5 +1,4 @@
 <div class="screening-list">
-   
     <div>
         <table class="table-auto border-collapse w-full">
             <thead>

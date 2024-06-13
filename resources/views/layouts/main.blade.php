@@ -48,7 +48,10 @@
                         <x-menus.menu-item content="Customers" selectable="1" href="{{ route('customers.index') }}" selected="{{ Route::currentRouteName() == 'customers.index'}}" />
 
                         <x-menus.menu-item content="Tickets" selectable="1" href="{{ route('tickets.index') }}" selected="{{ Route::currentRouteName() == 'tickets.index'}}" />
+                        
+                        <x-menus.menu-item content="Screenings" selectable="1" href="{{ route('screenings.index') }}" selected="{{ Route::currentRouteName() == 'screenings.index'}}" />
  
+                      
                         <!-- Menu Item: Others -->
                         <!--<x-menus.submenu selectable="0" uniqueName="submenu_others" content="More">
                             @can('viewAny', App\Models\Student::class)

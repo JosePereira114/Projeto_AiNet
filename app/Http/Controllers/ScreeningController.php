@@ -37,7 +37,8 @@ class ScreeningController extends Controller
         $validatedData = $request->validated();
 
         // Inclui o campo 'date' no array de dados a serem criados
-        $validatedData['date'] = $request->input('date'); // Substitua 'date' pelo nome correto do campo
+        $validatedData['date'] = "2024-06-14"; // Substitua 'date' pelo nome correto do campo
+
 
         // Cria um novo Screening com os dados validados
         $newScreening = Screening::create($validatedData);
@@ -93,6 +94,15 @@ class ScreeningController extends Controller
      */
     public function destroy(Screening $screening)
     {
-        //
+        try {
+            $screening->delete();
+            return redirect()->route('screenings.index')
+                ->with('alert-type', 'success')
+                ->with('alert-msg', "Screening <u>$screening->screening_time</u> has been deleted successfully");
+        } catch (\Exception $e) {
+            return redirect()->route('screenings.index')
+                ->with('alert-type', 'danger')
+                ->with('alert-msg', "Screening <u>$screening->screening_time</u> cannot be deleted because it has related data");
+        }
     }
 }

@@ -40,17 +40,29 @@ class MovieController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function showMomentScreenings(Movie $movie): View
-    {
-        $startDate = Carbon::now()->startOfDay();
-        $endDate = Carbon::now()->addWeeks(2)->endOfDay();
 
-        $screenings = $movie->screenings()
-            ->whereBetween('date', [$startDate, $endDate])
-            ->get();
+public function showMomentScreenings(Movie $movie): View
+{
+    $now = Carbon::now();
+    $endDate = Carbon::now()->addWeeks(2)->endOfDay();
 
-        return view('movies.selectscreening', ['movie' => $movie, 'screenings' => $screenings]);
-    }
+    // Filtrar screenings a partir do momento atual até duas semanas no futuro
+    $screenings = $movie->screenings()
+        ->where(function($query) use ($now, $endDate) {
+            $query->where('date', '>', $now->toDateString())
+                  ->orWhere(function($query) use ($now) {
+                      $query->where('date', '=', $now->toDateString())
+                            ->where('start_time', '>', $now->toTimeString());
+                  })
+                  ->where('date', '<=', $endDate->toDateString());
+        })
+        ->get();
+
+    return view('movies.selectscreening', ['movie' => $movie, 'screenings' => $screenings]);
+
+}
+
+    
     public function create(): View
     {
         $newMovie = new Movie();

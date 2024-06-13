@@ -2,7 +2,7 @@
 
 @php
     // Use Carbon para formatar o valor da data
-    $formattedValue = $value ? \Carbon\Carbon::parse($value)->format('Y-m-d') : '';
+    $formattedValue = $value ? \Carbon\Carbon::parse($value)->format('Y-n-j') : '';
 @endphp
 
 <div>

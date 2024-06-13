@@ -31,7 +31,7 @@ class UserController extends Controller
     public function store(UserFormRequest $request): RedirectResponse
     {
         $validatedData=$request->validated();
-        $validatedData['password'] = bcrypt('123');
+        $validatedData['password'] = bcrypt($validatedData['password']);
         $newUser = User::create($validatedData);
         $url = route('users.show', ['user' => $newUser]);
         $htmlMessage = "User <a href='$url'><u>{$newUser->name}</u></a> has been created successfully!";
@@ -87,9 +87,10 @@ class UserController extends Controller
     }
     public function updateBlocked(User $user){
         $user->blocked=!$user->blocked;
+        $user->save();
         $msg = $user->blocked ? 'blocked' : 'unblocked';
         $htmlMessage = "User <u>$user->name</u> has been $msg";
-        return redirect()->back()
+        return redirect()->route('users.index')
         ->with('alert-type','success')
         ->with('alert-message',$htmlMessage);
     }

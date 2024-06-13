@@ -144,7 +144,7 @@ Route::delete('theaters/{theater}/photo', [TheaterController::class, 'destroyPho
 ->name('theaters.photo.destroy')
 ->can('update', 'theater');
 });
-
+Route::patch('user/{user}', [UserController::class, 'updateBlocked'])->name('users.block');
 /* ----- OTHER PUBLIC ROUTES ----- */
 //Course show is public.
 Route::resource('courses', CourseController::class)->only(['show']);
