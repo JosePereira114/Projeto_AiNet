@@ -48,13 +48,13 @@ class GenrePolicy
     public function update(User $user, Genre $genre): bool|null
     {
         //
-        return true;
+        return ($user->type == 'A');
     }
 
     public function restore(User $user, Genre $genre): bool|null
     {
         //
-        return true;
+        return ($user->type == 'A');
     }
 
     /**
@@ -63,6 +63,6 @@ class GenrePolicy
     public function forceDelete(User $user, Genre $genre): bool|null
     {
         //
-        return true;
+        return ($user->type == 'A');
     }
 }

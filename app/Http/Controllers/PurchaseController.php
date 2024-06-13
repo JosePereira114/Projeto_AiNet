@@ -6,8 +6,9 @@ use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Screening;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class PurchaseController extends Controller
+class PurchaseController extends \Illuminate\Routing\Controller
 {
     /**
      * Display a listing of the resource.

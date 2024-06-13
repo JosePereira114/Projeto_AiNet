@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\ScreeningFormRequest;
 use Illuminate\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class ScreeningController extends Controller
+class ScreeningController extends \Illuminate\Routing\Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Screening::class);
+    }
     /**
      * Display a listing of the resource.
      */

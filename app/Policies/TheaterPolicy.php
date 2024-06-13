@@ -43,7 +43,7 @@ class TheaterPolicy
     public function create(User $user): bool|null
     {
         //
-        return true;
+        return ($user->type == 'A');
     }
 
     /**
@@ -52,7 +52,7 @@ class TheaterPolicy
     public function update(User $user, Theater $theater): bool|null
     {
         //
-        return true;
+        return ($user->type == 'A');
     }
 
     /**
@@ -61,7 +61,7 @@ class TheaterPolicy
     public function delete(User $user, Theater $theater): bool|null
     {
         //
-        return true;
+        return ($user->type == 'A');
     }
 
     /**
@@ -70,7 +70,7 @@ class TheaterPolicy
     public function restore(User $user, Theater $theater): bool|null
     {
         //
-        return true;
+        return ($user->type == 'A');
     }
 
     /**
@@ -79,6 +79,6 @@ class TheaterPolicy
     public function forceDelete(User $user, Theater $theater): bool|null
     {
         //
-        return true;
+        return ($user->type == 'A');
     }
 }

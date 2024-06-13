@@ -9,9 +9,18 @@ use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\TheaterFormRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class TheaterController extends Controller
+class TheaterController extends \Illuminate\Routing\Controller
 {
+
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Theater::class);
+    }
+
     /**
      * Display a listing of the resource.
         */

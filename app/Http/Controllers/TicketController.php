@@ -9,6 +9,7 @@ use App\Models\Screening;
 
 class TicketController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      */
