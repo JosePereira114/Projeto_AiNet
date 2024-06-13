@@ -19,13 +19,13 @@ class ScreeningFormRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'movie_id' => 'required|numeric',
-            'screening_room_id' => 'required|numeric',
-            'screening_time' => 'required|date',
-            'ticket_price' => 'required|numeric',
+            'movie_id' => 'required|exists:movies,id',
+            'theater_id' => 'required|exists:theaters,id',
+            'date' => 'required|date_format:Y-m-d',
+            'start_time' => 'required|date_format:H:i:s',
         ];
     }
 }

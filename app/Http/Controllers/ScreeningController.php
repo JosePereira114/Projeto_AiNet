@@ -15,9 +15,8 @@ class ScreeningController extends Controller
      */
     public function index(Request $request): View
     {
-        $screenings = Screening::orderBy('id','desc')->paginate(20);
+        $screenings = Screening::orderBy('id', 'desc')->paginate(20);
         return view('screenings.index')->with('screenings', $screenings);
-
     }
 
     /**
@@ -34,9 +33,22 @@ class ScreeningController extends Controller
      */
     public function store(ScreeningFormRequest $request)
     {
-        $newScreening = Screening::create($request->validated());
+        // Valida os dados do request
+        $validatedData = $request->validated();
+
+        // Inclui o campo 'date' no array de dados a serem criados
+        $validatedData['date'] = $request->input('date'); // Substitua 'date' pelo nome correto do campo
+
+        // Cria um novo Screening com os dados validados
+        $newScreening = Screening::create($validatedData);
+
+        // Gera a URL para a página de visualização do screening criado
         $url = route('screenings.show', ['screening' => $newScreening]);
+
+        // Mensagem HTML de sucesso
         $htmlMessage = "Screening <a href='$url'><u>{$newScreening->screening_time}</u></a> has been created successfully!";
+
+        // Redireciona para a página de índice de screenings com uma mensagem de sucesso
         return redirect()->route('screenings.index')
             ->with('alert-type', 'success')
             ->with('alert-msg', $htmlMessage);
