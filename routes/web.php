@@ -26,8 +26,7 @@ use App\Http\Controllers\ChartController;
 //Route::get('/statistics', [StatisticsController::class, 'index']);
 Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
 
-Route::get('/charts', [ChartController::class, 'showChart']);
-
+Route::get('/charts', [ChartController::class, 'showChart2']);
 
 
 
