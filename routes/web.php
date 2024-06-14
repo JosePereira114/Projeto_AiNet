@@ -20,9 +20,13 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\StatisticsController;
 use App\Models\Student;
 use App\Models\Genre;
+use App\Http\Controllers\ChartController;
 
 //Teste estatisticas
-Route::get('/statistics', [StatisticsController::class, 'index']);
+//Route::get('/statistics', [StatisticsController::class, 'index']);
+Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
+
+Route::get('/charts', [ChartController::class, 'showChart']);
 
 
 

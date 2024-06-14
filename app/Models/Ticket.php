@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Ticket extends Model
 {
     use HasFactory;
+    protected $table = 'tickets';
     protected $fillable=[
         'price',
         'qrcode_url',

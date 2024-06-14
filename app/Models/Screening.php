@@ -11,6 +11,7 @@ use Carbon\Carbon;
 class Screening extends Model
 {
     use HasFactory;
+    protected $table = 'screenings';
     protected $fillable=[
         'date',
         'start_time',
