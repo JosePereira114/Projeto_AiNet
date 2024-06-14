@@ -17,8 +17,15 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\StatisticsController;
 use App\Models\Student;
 use App\Models\Genre;
+
+//Teste estatisticas
+Route::get('/statistics', [StatisticsController::class, 'index']);
+
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,7 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 /* ----- PUBLIC ROUTES ----- */
 Route::get('/', [MovieController::class, 'showMoment'])->name('home');
@@ -117,17 +124,6 @@ Route::middleware('auth', 'verified')->group(function () {
         ->name('administratives.photo.destroy');
     Route::resource('administratives', AdministrativeController::class);
 
-    // Add a discipline to the cart:
-    Route::post('cart/{screening}', [CartController::class, 'addToCart'])
-        ->name('cart.add');
-    // Remove a discipline from the cart:
-    Route::delete('cart/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-    // Show the cart:
-    Route::get('cart', [CartController::class, 'show'])->name('cart.show');
-    // Confirm (store) the cart and save disciplines registration on the database:
-    Route::post('cart', [CartController::class, 'confirm'])->name('cart.confirm');
-    // Clear the cart:
-    Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
 
     Route::middleware('can:admin')->group(function () {
         //Course insert, update and delete related routes are for admin only
@@ -136,16 +132,30 @@ Route::middleware('auth', 'verified')->group(function () {
         Route::resource('departments', DepartmentController::class)->except(['index', 'show']);
     });
     Route::get('courses/{course}/curriculum', [CourseController::class, 'showCurriculum'])->name('courses.curriculum');
-Route::get('movies/showcase', [MovieController::class, 'showCase'])->name('movies.showcase');
-Route::delete('movies/{movie}/photo', [TheaterController::class, 'destroyImage'])->name('movies.image.destroy');
-Route::get('/movies/{movie}/screenings', [MovieController::class, 'showScreening']);
-Route::resource('theaters',TheaterController::class);
-Route::delete('theaters/{theater}/photo', [TheaterController::class, 'destroyPhoto'])
-->name('theaters.photo.destroy')
-->can('update', 'theater');
+    Route::get('movies/showcase', [MovieController::class, 'showCase'])->name('movies.showcase');
+    Route::delete('movies/{movie}/photo', [TheaterController::class, 'destroyImage'])->name('movies.image.destroy');
+    Route::get('/movies/{movie}/screenings', [MovieController::class, 'showScreening']);
+    Route::resource('theaters', TheaterController::class);
+    Route::delete('theaters/{theater}/photo', [TheaterController::class, 'destroyPhoto'])
+        ->name('theaters.photo.destroy')
+        ->can('update', 'theater');
 });
 Route::patch('user/{user}', [UserController::class, 'updateBlocked'])->name('users.block');
 /* ----- OTHER PUBLIC ROUTES ----- */
+
+// Add a discipline to the cart:
+Route::post('cart/{screening}', [CartController::class, 'addToCart'])
+    ->name('cart.add');
+// Remove a discipline from the cart:
+Route::delete('cart/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+// Show the cart:
+Route::get('cart', [CartController::class, 'show'])->name('cart.show');
+// Confirm (store) the cart and save disciplines registration on the database:
+Route::post('cart', [CartController::class, 'confirm'])->name('cart.confirm');
+// Clear the cart:
+Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
+
+
 //Course show is public.
 Route::resource('courses', CourseController::class)->only(['show']);
 Route::resource('movies', MovieController::class);
