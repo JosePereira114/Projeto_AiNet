@@ -150,7 +150,7 @@ class CartController extends Controller
                         $tickets[] = $ticket;
                     }
                     $purchase->total_price=$totalPrice;
-                    $purchase->receipt_pdf_filename=PDFController::generateReceipt($purchase,$tickets);
+                    $purchase->receipt_pdf_filename=PDFController::generateReceipt($purchase,$tickets   );
                     $purchase->save();
                 });
                 $request->session()->forget('cart');
