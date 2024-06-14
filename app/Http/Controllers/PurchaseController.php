@@ -67,8 +67,7 @@ class PurchaseController extends \Illuminate\Routing\Controller
     }
     public function getReceipt(Purchase $purchase){
         if($purchase->receipt_pdf_filename){
-            return Storage::response('pdf_purchases/'.$purchase->receipt_pdf_filename);
-            //return Storage::download('pdf_purchases/'.$purchase->receipt_pdf_filename);
+            return Storage::download('pdf_purchases/'.$purchase->receipt_pdf_filename);
         }
     }
     public function buy(Screening $screening)

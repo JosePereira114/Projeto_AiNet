@@ -128,6 +128,16 @@ Route::middleware('auth', 'verified')->group(function () {
         ->name('administratives.photo.destroy');
     Route::resource('administratives', AdministrativeController::class);
 
+    // Add a discipline to the cart:
+    Route::post('cart/{screening}', [CartController::class, 'addToCart'])->name('cart.add');
+    // Remove a discipline from the cart:
+    Route::delete('cart/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    // Show the cart:
+    Route::get('cart', [CartController::class, 'show'])->name('cart.show');
+    // Confirm (store) the cart and save disciplines registration on the database:
+    Route::post('cart', [CartController::class, 'confirm'])->name('cart.confirm');
+    // Clear the cart:
+    Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
 
     Route::middleware('can:admin')->group(function () {
         //Course insert, update and delete related routes are for admin only
