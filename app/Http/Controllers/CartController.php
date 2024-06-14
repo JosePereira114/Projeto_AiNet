@@ -146,8 +146,11 @@ class CartController extends Controller
                         $ticket->seat_id=$t['seat_id'];
                         $ticket->qrcode_url=route('tickets.showcase',['ticket'=>$ticket]);
                         $ticket->save();
+                        $totalPrice+=$t['price'];
+                        $tickets[] = $ticket;
                     }
-                    //$purchase->receipt_pdf_filename=PDFController::generateReceipt($purchase);
+                    $purchase->total_price=$totalPrice;
+                    $purchase->receipt_pdf_filename=PDFController::generateReceipt($purchase,$tickets);
                     $purchase->save();
                 });
                 $request->session()->forget('cart');

@@ -6,6 +6,8 @@
 @php
     if(Auth::user()){
             $customer = \App\Models\Customer::where('id', Auth::user()->id)->first();
+    }else{
+        $customer = new \App\Models\Customer();
     }
 @endphp
 
