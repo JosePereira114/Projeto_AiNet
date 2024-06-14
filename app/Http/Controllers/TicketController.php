@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use App\Models\Movie;
 use App\Models\Screening;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TicketController extends Controller
 {
@@ -19,6 +20,21 @@ class TicketController extends Controller
         return view('tickets.index', compact('tickets'));
     }
 
+    public function showcase(Ticket $ticket, $qrcode_url){
+        if($ticket->qrcode_url == $qrcode_url){
+            return view('tickets.show', compact('ticket'));
+        }else{
+            return redirect()->route('tickets.index')
+                ->with('alert-type', 'danger')
+                ->with('alert-msg', 'Invalid tocken');
+        }
+    }
+    public function generateQRCode(Ticket $ticket)
+    {
+        // Gerar o QR Code com base na URL específica do ticket
+        $qrcode = QrCode::size(300)->generate(route('tickets.showcase', ['ticket' => $ticket, 'qrcode_url' => $ticket->qrcode_url]));
+        return response($qrcode)->header('Content-type', 'image/png');
+    }
     /**
      * Show the form for creating a new resource.
      */
