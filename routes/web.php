@@ -118,8 +118,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::resource('administratives', AdministrativeController::class);
 
     // Add a discipline to the cart:
-    Route::post('cart/{screening}', [CartController::class, 'addToCart'])
-        ->name('cart.add');
+    Route::post('cart/{screening}', [CartController::class, 'addToCart'])->name('cart.add');
     // Remove a discipline from the cart:
     Route::delete('cart/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
     // Show the cart:
