@@ -21,6 +21,7 @@ use App\Http\Controllers\StatisticsController;
 use App\Models\Student;
 use App\Models\Genre;
 use App\Http\Controllers\ChartController;
+use App\Http\Controllers\QrCodeController;
 
 //Teste estatisticas
 //Route::get('/statistics', [StatisticsController::class, 'index']);
@@ -52,7 +53,8 @@ require __DIR__ . '/auth.php';
 /* ----- PUBLIC ROUTES ----- */
 Route::get('/', [MovieController::class, 'showMoment'])->name('home');
 Route::get('courses/showcase', [CourseController::class, 'showcase'])->name('courses.showcase');
-Route::get('tickets/showcase', [TicketController::class, 'showcase'])->name('tickets.showcase');
+Route::get('tickets/showcase/{ticket}/{qrcode_url}', [TicketController::class, 'showcase'])->name('tickets.showcase');
+Route::get('tickets/{ticket}/qrcode', [TicketController::class, 'generateQRCode'])->name('tickets.qrcode');
 Route::get('purchases/{screening}', [PurchaseController::class, 'buy'])->name('tickets.buy');
 Route::get('/movies/{movie}/selectscreening', [MovieController::class, 'showMomentScreenings'])->name('movies.showMomentScreenings');
 /* ----- Non-Verified users ----- */
@@ -174,6 +176,7 @@ Route::resource('courses', CourseController::class)->only(['show']);
 Route::resource('movies', MovieController::class);
 Route::resource('users', UserController::class);
 Route::resource('customers', CustomerController::class);
+Route::get('qrcode', [QrCodeController::class, 'show']);
 Route::resource('screenings', ScreeningController::class);
 Route::resource('tickets', TicketController::class);
 //Disciplines index and show are public

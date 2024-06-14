@@ -76,7 +76,6 @@
     $screening = \App\Models\Screening::where('id', $ticket->screening_id)->first();
     $movie = \App\Models\Movie::where('id', $screening->movie_id)->first();
     $seat = \App\Models\Seat::where('id', $ticket->seat_id)->first();
-    
     @endphp
     <div class="container page-break">
     <h1>Ticket to Movie:{{$movie->title}}</h1>
@@ -89,7 +88,7 @@
                 {{$seat->row}}.{{$seat->seat_number}}
             </p> 
             
-            <p><span class="highlight">QR Code:</span>{{$ticket->qrcode_url}} </p>
+             <p><span class="highlight">QR Code:</span><img src="{{ route('tickets.qrcode', $ticket->id) }}" alt="QR Code do Ticket"></p>
         </div>
     </div>
     @endforeach

@@ -17,6 +17,7 @@ use App\Models\Configuration;
 use App\Http\Controllers\PDFController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CartController extends Controller
 {
@@ -82,7 +83,7 @@ class CartController extends Controller
             ->with('alert-msg', 'Shopping Cart has been cleared');
     }
 
-
+    
     public function confirm(CartConfirmationFormRequest $request): RedirectResponse
     {
         $cart = session('cart', []);
@@ -144,13 +145,16 @@ class CartController extends Controller
                         $ticket->purchase_id=$purchase->id;
                         $ticket->screening_id=$t['screening_id'];
                         $ticket->seat_id=$t['seat_id'];
-                        $ticket->qrcode_url=route('tickets.showcase',['ticket'=>$ticket]);
+                        $randomString = Str::random(64);
+                        $ticket->save();
+                        $ticketUrl = route('tickets.showcase', ['ticket' => $ticket, 'qrcode_url' => $randomString]);
+                        $ticket->qrcode_url = $randomString;
                         $ticket->save();
                         $totalPrice+=$t['price'];
                         $tickets[] = $ticket;
                     }
                     $purchase->total_price=$totalPrice;
-                    $purchase->receipt_pdf_filename=PDFController::generateReceipt($purchase,$tickets   );
+                    $purchase->receipt_pdf_filename=PDFController::generateReceipt($purchase,$tickets);
                     $purchase->save();
                 });
                 $request->session()->forget('cart');

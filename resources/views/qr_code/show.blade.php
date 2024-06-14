@@ -1,0 +1,1 @@
+<div>{{$qrCode}}</div>
