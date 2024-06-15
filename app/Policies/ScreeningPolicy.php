@@ -39,10 +39,10 @@ class ScreeningPolicy
 
     public function delete(User $user, Screening $model)
     {
-        return ($user->type == 'A'); //admins podem apagar qualquer um exceto a si mesmo
+        return ($user->type == 'A');
     }
 
-    public function update(User $user, Screening $screening): bool|null
+    public function update(User $user): bool|null
     {
         return ($user->type == 'A'); 
     }

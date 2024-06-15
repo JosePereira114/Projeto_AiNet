@@ -8,10 +8,12 @@
                     shadow-sm sm:rounded-lg text-gray-900 dark:text-gray-50">
             
             <div class="flex items-center gap-4 mb-4">
+            @can('create', App\Models\Screening::class)
                 <x-button
                     href="{{ route('screenings.create') }}"
                     text="Create a new screening"
                     type="success"/>
+            @endcan
             </div>
             <div class="font-base text-sm text-gray-700 dark:text-gray-300">
                 <x-screenings.table :screenings="$screenings"
