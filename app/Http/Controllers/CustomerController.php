@@ -9,9 +9,16 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\CustomerFormRequest;
 use App\Http\Requests\UserFormRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class CustomerController extends Controller
+class CustomerController extends \Illuminate\Routing\Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Customer::class);
+    }
     /**
      * Display a listing of the resource.
      */

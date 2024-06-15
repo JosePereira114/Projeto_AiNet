@@ -37,19 +37,29 @@
                         <x-menus.menu-item content="Movies" href="{{ route('movies.index') }}" selected="{{ Route::currentRouteName() == 'movies.index'}}" />
                        
                         @auth
+
+                        @can('create', App\Models\Genre::class)
                          <!-- Menu Item: Genres -->
                          <x-menus.menu-item content="Genre" selectable="1" href="{{ route('genres.index') }}" selected="{{ Route::currentRouteName() == 'genres.index'}}" />
-
-                        <!-- Menu Item: Teachers -->
+                        @endcan
                         <x-menus.menu-item content="Theaters" selectable="1" href="{{ route('theaters.index') }}" selected="{{ Route::currentRouteName() == 'theaters.index'}}" />
-                        
-                        <x-menus.menu-item content="Users" selectable="1" href="{{ route('users.index') }}" selected="{{ Route::currentRouteName() == 'users.index'}}" />
-                        
-                        <x-menus.menu-item content="Customers" selectable="1" href="{{ route('customers.index') }}" selected="{{ Route::currentRouteName() == 'customers.index'}}" />
 
+                        @can('viewAny', App\Models\User::class)
+                        <x-menus.menu-item content="Users" selectable="1" href="{{ route('users.index') }}" selected="{{ Route::currentRouteName() == 'users.index'}}" />
+                        @endcan
+
+                        @can('viewAny', App\Models\Customer::class)
+                        <x-menus.menu-item content="Customers" selectable="1" href="{{ route('customers.index') }}" selected="{{ Route::currentRouteName() == 'customers.index'}}" />
+                        @endcan
+
+                        @can('create', App\Models\Ticket::class)
                         <x-menus.menu-item content="Tickets" selectable="1" href="{{ route('tickets.index') }}" selected="{{ Route::currentRouteName() == 'tickets.index'}}" />
-                        
+                        @endcan
+
                         <x-menus.menu-item content="Screenings" selectable="1" href="{{ route('screenings.index') }}" selected="{{ Route::currentRouteName() == 'screenings.index'}}" />
+
+                        <!-- POR FAZER AINDA (HISTORICO DOS CLIENTES) -->
+                        <x-menus.menu-item content="Historic" selectable="1" href="{{ route('screenings.index') }}" selected="{{ Route::currentRouteName() == 'screenings.index'}}" />
  
                       
                         <!-- Menu Item: Others -->

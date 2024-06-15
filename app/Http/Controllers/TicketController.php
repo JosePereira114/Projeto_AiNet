@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 use App\Models\Movie;
 use App\Models\Screening;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class TicketController extends Controller
+class TicketController extends \Illuminate\Routing\Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Ticket::class);
+    }
     
     /**
      * Display a listing of the resource.
