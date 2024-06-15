@@ -2,16 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Theater;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
-class TheaterPolicy
+class MoviePolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-
     public function before(?User $user, string $ability): bool|null
     {
         if ($user?->admin) {
@@ -31,7 +25,7 @@ class TheaterPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Theater $theater): bool|null
+    public function view(User $user): bool|null
     {
         //
         return true;
@@ -67,7 +61,7 @@ class TheaterPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Theater $theater): bool|null
+    public function restore(User $user): bool|null
     {
         //
         return ($user->type == 'A');
@@ -76,7 +70,7 @@ class TheaterPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Theater $theater): bool|null
+    public function forceDelete(User $user): bool|null
     {
         //
         return ($user->type == 'A');

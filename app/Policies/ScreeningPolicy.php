@@ -37,7 +37,7 @@ class ScreeningPolicy
         return ($user->type == 'A');
     }
 
-    public function delete(User $user, Screening $model)
+    public function delete(User $user)
     {
         return ($user->type == 'A');
     }

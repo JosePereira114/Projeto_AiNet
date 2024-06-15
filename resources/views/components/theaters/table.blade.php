@@ -30,16 +30,20 @@
                     </td>
                 @endif
                 @if($showEdit)
+                @can('update', App\Models\Theater::class)
                     <td>
                         <x-table.icon-edit class="px-0.5"
                         href="{{ route('theaters.edit', ['theater' => $theater]) }}"/>
                     </td>
+                @endcan
                 @endif
                 @if($showDelete)
+                @can('delete', App\Models\Theater::class)
                     <td>
                         <x-table.icon-delete class="px-0.5"
                         action="{{ route('theaters.destroy', ['theater' => $theater]) }}"/>
                     </td>
+                @endcan
                 @endif
             </tr>
         @endforeach
