@@ -6,6 +6,8 @@ use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Screening;
+use App\Models\User;
+use App\Models\Ticket;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PurchaseController extends \Illuminate\Routing\Controller
@@ -64,6 +66,13 @@ class PurchaseController extends \Illuminate\Routing\Controller
     public function destroy(Purchase $purchase)
     {
         //
+    }
+    public function showHistoric($id){
+        $purchases = Purchase::where('customer_id', $id)->orderBy('created_at', 'desc')->get();
+        foreach($purchases as $purchase){
+            $purchase->tickets = Ticket::where('purchase_id', $purchase->id)->get();
+        }
+        return view('purchases.historic', [ 'purchases' => $purchases,]);
     }
     public function getReceipt(Purchase $purchase){
         if($purchase->receipt_pdf_filename){

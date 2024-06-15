@@ -59,7 +59,7 @@
                         <x-menus.menu-item content="Screenings" selectable="1" href="{{ route('screenings.index') }}" selected="{{ Route::currentRouteName() == 'screenings.index'}}" />
 
                         <!-- POR FAZER AINDA (HISTORICO DOS CLIENTES) -->
-                        <x-menus.menu-item content="Historic" selectable="1" href="{{ route('screenings.index') }}" selected="{{ Route::currentRouteName() == 'screenings.index'}}" />
+                        <x-menus.menu-item content="Historic" selectable="1" href="{{ route('historic.index', ['customer' =>Auth::user()]) }}" selected="{{ Route::currentRouteName() == 'historic.index'}}" />
  
                       
                         <!-- Menu Item: Others -->

@@ -57,6 +57,7 @@ Route::get('tickets/showcase/{ticket}/{qrcode_url}', [TicketController::class, '
 Route::get('tickets/{ticket}/qrcode', [TicketController::class, 'generateQRCode'])->name('tickets.qrcode');
 Route::get('tickets/{ticket}/access', [TicketController::class, 'access'])->name('tickets.access');
 Route::get('purchases/{screening}', [PurchaseController::class, 'buy'])->name('tickets.buy');
+Route::get('purchases/historic/{customer}', [PurchaseController::class, 'showHistoric'])->name('historic.index');
 Route::get('/movies/{movie}/selectscreening', [MovieController::class, 'showMomentScreenings'])->name('movies.showMomentScreenings');
 /* ----- Non-Verified users ----- */
 Route::middleware('auth')->group(function () {
