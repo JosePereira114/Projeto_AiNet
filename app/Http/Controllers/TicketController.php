@@ -32,8 +32,9 @@ class TicketController extends Controller
     public function generateQRCode(Ticket $ticket)
     {
         // Gerar o QR Code com base na URL específica do ticket
-        $qrcode = QrCode::size(300)->generate(route('tickets.showcase', ['ticket' => $ticket, 'qrcode_url' => $ticket->qrcode_url]));
-        return response($qrcode)->header('Content-type', 'image/png');
+        $url = route('tickets.showcase', ['ticket' => $ticket->id, 'qrcode_url' => $ticket->qrcode_url]);
+        $qrcode = QrCode::format('png')->size(300)->generate($url);
+        return response($qrcode)->header('Content-Type', 'image/png');
     }
     /**
      * Show the form for creating a new resource.
