@@ -13,6 +13,10 @@
                         text="New"
                         type="success"/>
                     <x-button
+                        href="{{ route('tickets.access', ['ticket' => $ticket]) }}"
+                        text="Access"
+                        type="primary"/>
+                    <x-button
                         href="{{ route('tickets.edit', ['ticket' => $ticket]) }}"
                         text="Edit"
                         type="primary"/>

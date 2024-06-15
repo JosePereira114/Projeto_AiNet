@@ -43,9 +43,6 @@ class ScreeningController extends \Illuminate\Routing\Controller
         // Valida os dados do request
         $validatedData = $request->validated();
 
-        // Inclui o campo 'date' no array de dados a serem criados
-        $validatedData['date'] = "2024-06-14"; // Substitua 'date' pelo nome correto do campo
-
 
         // Cria um novo Screening com os dados validados
         $newScreening = Screening::create($validatedData);

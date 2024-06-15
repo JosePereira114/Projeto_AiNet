@@ -55,6 +55,7 @@ Route::get('/', [MovieController::class, 'showMoment'])->name('home');
 Route::get('courses/showcase', [CourseController::class, 'showcase'])->name('courses.showcase');
 Route::get('tickets/showcase/{ticket}/{qrcode_url}', [TicketController::class, 'showcase'])->name('tickets.showcase');
 Route::get('tickets/{ticket}/qrcode', [TicketController::class, 'generateQRCode'])->name('tickets.qrcode');
+Route::get('tickets/{ticket}/access', [TicketController::class, 'access'])->name('tickets.access');
 Route::get('purchases/{screening}', [PurchaseController::class, 'buy'])->name('tickets.buy');
 Route::get('/movies/{movie}/selectscreening', [MovieController::class, 'showMomentScreenings'])->name('movies.showMomentScreenings');
 /* ----- Non-Verified users ----- */

@@ -30,17 +30,40 @@ class TicketController extends \Illuminate\Routing\Controller
     public function showcase(Ticket $ticket, $qrcode_url){
         if($ticket->qrcode_url == $qrcode_url){
             return view('tickets.show', compact('ticket'));
-        }else{
+        }elseif($ticket->status != 'active'){
+            return redirect()->route('tickets.index')
+                ->with('alert-type', 'danger')
+                ->with('alert-msg', 'Invalid tocken');
+        }
+        else{
             return redirect()->route('tickets.index')
                 ->with('alert-type', 'danger')
                 ->with('alert-msg', 'Invalid tocken');
         }
     }
+
+    public function access(Ticket $ticket)
+    {
+        $ticket->status = 'invalid';
+        $ticket->save();
+        $url = route('tickets.show', ['ticket' => $ticket]);
+        $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> has been used successfully!";
+        return redirect()->route('tickets.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', $htmlMessage);
+    }
     public function generateQRCode(Ticket $ticket)
     {
         // Gerar o QR Code com base na URL específica do ticket
-        $qrcode = QrCode::size(300)->generate(route('tickets.showcase', ['ticket' => $ticket, 'qrcode_url' => $ticket->qrcode_url]));
-        return response($qrcode)->header('Content-type', 'image/png');
+        
+        $url = route('tickets.showcase', ['ticket' => $ticket->id, 'qrcode_url' => $ticket->qrcode_url]);
+        
+        $qrcode = QrCode::format('png')->size(300)->generate($url);
+        // Verificar se o conteúdo gerado é um PNG válido
+    if (substr($qrcode, 0, 4) !== "\x89PNG") {
+        abort(404, 'QR Code do Ticket Image not found or type unknown');
+    }
+        return response($qrcode)->header('Content-Type', 'image/png');
     }
     /**
      * Show the form for creating a new resource.
