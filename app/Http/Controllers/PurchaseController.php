@@ -18,22 +18,8 @@ class PurchaseController extends \Illuminate\Routing\Controller
     public function index()
     {
         //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        $purchases = Purchase::orderBy('created_at', 'desc')->paginate(10);
+        return view('purchases.index', compact('purchases'));
     }
 
     /**
@@ -41,32 +27,28 @@ class PurchaseController extends \Illuminate\Routing\Controller
      */
     public function show(Purchase $purchase)
     {
-        //
+        return view('purchases.show', compact('purchase'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Purchase $purchase)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Purchase $purchase)
-    {
-        //
-    }
+    
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Purchase $purchase)
     {
-        //
+        try {
+        $purchase->delete();
+        return redirect()->route('purchases.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'Purchase deleted successfully');
+    } catch (\Exception $e) {
+        return redirect()->route('purchases.index')
+            ->with('alert-type', 'danger')
+            ->with('alert-msg', 'Error deleting purchase');
     }
+    }
+
     public function showHistoric($id){
         $purchases = Purchase::where('customer_id', $id)->orderBy('created_at', 'desc')->get();
         foreach($purchases as $purchase){

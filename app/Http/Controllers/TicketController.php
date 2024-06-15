@@ -42,16 +42,7 @@ class TicketController extends \Illuminate\Routing\Controller
         }
     }
 
-    public function access(Ticket $ticket)
-    {
-        $ticket->status = 'invalid';
-        $ticket->save();
-        $url = route('tickets.show', ['ticket' => $ticket]);
-        $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> has been used successfully!";
-        return redirect()->route('tickets.index')
-            ->with('alert-type', 'success')
-            ->with('alert-msg', $htmlMessage);
-    }
+
     public function generateQRCode(Ticket $ticket)
     {
         // Gerar o QR Code com base na URL específica do ticket
@@ -95,9 +86,15 @@ class TicketController extends \Illuminate\Routing\Controller
         return view('tickets.show', compact('ticket'));
     }
 
-    public function validate(Request $request)
+    public function validate(Ticket $ticket)
     {
-        //validar o ticket
+        $ticket->status = 'invalid';
+        $ticket->save();
+        $url = route('tickets.show', ['ticket' => $ticket]);
+        $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> has been used successfully!";
+        return redirect()->route('tickets.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', $htmlMessage);
     }
 
     /**
@@ -126,8 +123,8 @@ class TicketController extends \Illuminate\Routing\Controller
      */
     public function destroy(Ticket $ticket)
     {
-        try {
-            $url = route('tickets.show', ['ticket' => $ticket]);
+       
+        $url = route('tickets.show', ['ticket' => $ticket]);
             $totalPurchase = $ticket->purchase()->count();
             $totalSeat = $ticket->seat()->count();
             $totalScreening = $ticket->screening()->count();
