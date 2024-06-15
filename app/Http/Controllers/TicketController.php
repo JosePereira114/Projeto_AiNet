@@ -39,8 +39,14 @@ class TicketController extends \Illuminate\Routing\Controller
     public function generateQRCode(Ticket $ticket)
     {
         // Gerar o QR Code com base na URL específica do ticket
+        dd("FUCK");
         $url = route('tickets.showcase', ['ticket' => $ticket->id, 'qrcode_url' => $ticket->qrcode_url]);
+        
         $qrcode = QrCode::format('png')->size(300)->generate($url);
+        // Verificar se o conteúdo gerado é um PNG válido
+    if (substr($qrcode, 0, 4) !== "\x89PNG") {
+        abort(404, 'QR Code do Ticket Image not found or type unknown');
+    }
         return response($qrcode)->header('Content-Type', 'image/png');
     }
     /**
