@@ -80,6 +80,7 @@
     $screening = \App\Models\Screening::where('id', $ticket->screening_id)->first();
     $movie = \App\Models\Movie::where('id', $screening->movie_id)->first();
     $seat = \App\Models\Seat::where('id', $ticket->seat_id)->first();
+    $qrCodeBase64 = $qrcodes[$ticket->id] ?? ''; 
     @endphp
     <div class="container page-break">
         <h1>Ticket para o Filme: {{$movie->title}}</h1>
@@ -89,7 +90,7 @@
             <p><span class="highlight">Às:</span> {{$screening->start_time}}</p>
             <p><span class="highlight">Do dia:</span> {{$screening->date}}</p>
             <p><span class="highlight">Lugar:</span> {{$seat->row}}.{{$seat->seat_number}}</p>
-            <p><span class="highlight">QR Code:</span><img src="{{ route('tickets.qrcode', $ticket->id) }}" alt="QR Code do Ticket"></p>
+            <p><span class="highlight">QR Code:</span><img src="data:image/png;base64,{{ $qrCodeBase64 }}" alt="QR Code do Ticket"></p>
         </div>
     </div>
     @endforeach

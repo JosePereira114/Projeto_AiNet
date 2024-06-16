@@ -48,12 +48,7 @@ class TicketController extends \Illuminate\Routing\Controller
         // Gerar o QR Code com base na URL específica do ticket
         
         $url = route('tickets.showcase', ['ticket' => $ticket->id, 'qrcode_url' => $ticket->qrcode_url]);
-        
         $qrcode = QrCode::format('png')->size(300)->generate($url);
-        // Verificar se o conteúdo gerado é um PNG válido
-    if (substr($qrcode, 0, 4) !== "\x89PNG") {
-        abort(404, 'QR Code do Ticket Image not found or type unknown');
-    }
         return response($qrcode)->header('Content-Type', 'image/png');
     }
     /**
@@ -123,7 +118,7 @@ class TicketController extends \Illuminate\Routing\Controller
      */
     public function destroy(Ticket $ticket)
     {
-       
+       try{
         $url = route('tickets.show', ['ticket' => $ticket]);
             $totalPurchase = $ticket->purchase()->count();
             $totalSeat = $ticket->seat()->count();
@@ -140,7 +135,7 @@ class TicketController extends \Illuminate\Routing\Controller
                     ->with('alert-type', 'success')
                     ->with('alert-msg', $htmlMessage);
             }
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             return redirect()->route('tickets.index')
                 ->with('alert-type', 'danger')
                 ->with('alert-msg', 'Ticket cannot be deleted');
