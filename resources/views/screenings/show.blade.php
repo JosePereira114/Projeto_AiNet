@@ -37,7 +37,7 @@
                     </h2>
                 </header>
                 @include('screenings.shared.fields', ['mode' => 'show'])
-                @can('viewAny', App\Models\QrCode::class)
+                @can('Qr', App\Models\Ticket::class)
                 <div>
                     <form method="POST" action="{{ route('screenings.processUrl', ['screening' => $screening]) }}">
                         @csrf
