@@ -51,6 +51,7 @@ require __DIR__ . '/auth.php';
 
 
 Route::post('/screenings/{screening}/process-url', [ScreeningController::class, 'processUrl'])->name('screenings.processUrl');
+Route::get('/cart/download-pdf', [CartController::class, 'downloadPdf'])->name('cart.downloadPdf');
 
 /* ----- PUBLIC ROUTES ----- */
 Route::get('/', [MovieController::class, 'showMoment'])->name('home');
