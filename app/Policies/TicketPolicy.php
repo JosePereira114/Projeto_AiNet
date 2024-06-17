@@ -23,6 +23,12 @@ class TicketPolicy
         return ($user->type == 'A');
     }
 
+    public function Qr(User $user): bool|null
+    {
+        //
+        return ($user->type == 'A') || ($user->type == 'E');
+    }
+
     /**
      * Determine whether the user can view the model.
      */
