@@ -21,7 +21,7 @@ class SeatController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
