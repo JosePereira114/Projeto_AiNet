@@ -33,11 +33,10 @@
                     <!-- Menu Items -->
                     <div id="menu-container" class="grow flex flex-col sm:flex-row items-stretch
                     invisible h-0 sm:visible sm:h-auto">
+                        @auth
                         <!-- Menu Item: Movies -->
                         <x-menus.menu-item content="Movies" href="{{ route('movies.index') }}" selected="{{ Route::currentRouteName() == 'movies.index'}}" />
                        
-                        @auth
-
                         @can('create', App\Models\Genre::class)
                          <!-- Menu Item: Genres -->
                          <x-menus.menu-item content="Genre" selectable="1" href="{{ route('genres.index') }}" selected="{{ Route::currentRouteName() == 'genres.index'}}" />
@@ -63,19 +62,17 @@
  
                       
                         <!-- Menu Item: Others -->
-                        <!--<x-menus.submenu selectable="0" uniqueName="submenu_others" content="More">
-                            @can('viewAny', App\Models\Student::class)
-                            <x-menus.submenu-item content="Students" selectable="0" href="{{ route('students.index') }}" />
-                            @endcan
-                            <x-menus.submenu-item content="Administratives" selectable="0" href="{{ route('administratives.index') }}" />
-                            <hr>
-                            <x-menus.submenu-item content="Departments" selectable="0" href="{{ route('departments.index') }}" />
-                            <x-menus.submenu-item content="Course Management" href="{{ route('courses.index') }}" />
-                        </x-menus.submenu>-->
+                        @can('viewAny', App\Models\Chart::class)
+                        <x-menus.submenu selectable="0" uniqueName="submenu_others" content="Statistics">
+                            <x-menus.submenu-item content="General" selectable="0" href="{{ route('charts.showChart') }}" />
+                            <x-menus.submenu-item content="Tickets" selectable="0" href="{{ route('charts.showChart') }}" />
+                            <x-menus.submenu-item content="Genre" selectable="0" href="{{ route('charts.showChart2') }}" />
+                        </x-menus.submenu>
+                        @endcan
                         @endauth
 
                         <div class="grow"></div>
-
+    
                         <!-- Menu Item: Cart -->
                         @if (session('cart'))
                         <x-menus.cart :href="route('cart.show')" selectable="1" selected="{{ Route::currentRouteName() == 'cart.show'}}" :total="count(session('cart'))" />
