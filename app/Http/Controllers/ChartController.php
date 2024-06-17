@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Screening;
+use App\Models\Genre;
 
 class ChartController extends Controller
 {
@@ -13,7 +14,7 @@ class ChartController extends Controller
     {
         $totalTickets = Ticket::count();
         $totalScreenings = Screening::count();
-
+        $genres_countmovies = Genre::withCount('movies')->get();
         
 
         return view('statistics.general', compact('totalTickets', ));
