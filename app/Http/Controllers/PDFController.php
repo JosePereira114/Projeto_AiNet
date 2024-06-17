@@ -16,18 +16,19 @@ class PDFController extends Controller
         $screenings=[];
         $seats=[];
         $screeningIds = []; 
-        $qrcodes = [];
+        $qrCodes = [];
         foreach($tickets as $t){
             $screening = \App\Models\Screening::find($t->screening_id);
             if ($screening && !in_array($screening->id, $screeningIds)) {
                 $screenings[] = $screening;
-                $seats[] = \App\Models\Seat::find($t->seat_id);
                 $screeningIds[] = $screening->id;
-
-               $url = route('tickets.showcase', ['ticket' => $t->id, 'qrcode_url' => $t->qrcode_url]);
+                
+            }
+            
+            $seats[] = \App\Models\Seat::find($t->seat_id);
+            $url = route('tickets.showcase', ['ticket' => $t->id, 'qrcode_url' => $t->qrcode_url]);
             $qrCode = QrCode::format('png')->size(300)->generate($url);
             $qrCodes[$t->id] = base64_encode($qrCode);
-            }
         }
             $data = [
             'date' => $purchase->date, 
@@ -48,10 +49,11 @@ class PDFController extends Controller
         $filename = 'document_' . $purchase->id . '.pdf';
     
         // Salvando o PDF no storage (você pode ajustar o caminho conforme necessário)
-        $pdf->save(storage_path('app/public/receipts/' . $filename));
+        $pdfPath=storage_path('app/public/receipts/' . $filename);
+        $pdf->save($pdfPath);
         $pdf->stream('document_' . $purchase->id . '.pdf');
         // Retornando o nome do arquivo PDF
-        return $filename;
+        return ['filename' => $filename, 'base64' => base64_encode(file_get_contents($pdfPath))];
     }
 
 }

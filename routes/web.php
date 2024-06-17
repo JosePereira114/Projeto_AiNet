@@ -50,6 +50,9 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
+
+Route::post('/screenings/{screening}/process-url', [ScreeningController::class, 'processUrl'])->name('screenings.processUrl');
+
 /* ----- PUBLIC ROUTES ----- */
 Route::get('/', [MovieController::class, 'showMoment'])->name('home');
 Route::get('tickets/showcase/{ticket}/{qrcode_url}', [TicketController::class, 'showcase'])->name('tickets.showcase');

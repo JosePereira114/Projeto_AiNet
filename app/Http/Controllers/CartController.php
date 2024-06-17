@@ -18,6 +18,7 @@ use App\Http\Controllers\PDFController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
@@ -155,10 +156,20 @@ class CartController extends Controller
                     }
                     $purchase->total_price=$totalPrice;
                     $purchase->save();
-                    $purchase->receipt_pdf_filename=PDFController::generateReceipt($purchase,$tickets);
+                    $pdfData=PDFController::generateReceipt($purchase,$tickets);
+                    $purchase->receipt_pdf_filename=$pdfData['filename'];
                     $purchase->save();
+                    
+                    Mail::send('emails.receipt', ['purchase' => $purchase], function ($message) use ($purchase, $pdfData) {
+                        $message->to($purchase->customer_email)
+                                ->subject('Your Purchase Receipt')
+                                ->attachData(base64_decode($pdfData['base64']), $pdfData['filename'], [
+                                    'mime' => 'application/pdf',
+                                ]);
+                    });
                 });
                 $request->session()->forget('cart');
+
             }
         }
         if($ignored==0){

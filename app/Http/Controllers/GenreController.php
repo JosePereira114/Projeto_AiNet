@@ -9,6 +9,8 @@ use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\GenreFormRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
+use Carbon\Carbon;
+
 use App\Http\Controllers\Controller;
 
 class GenreController extends \Illuminate\Routing\Controller
@@ -98,17 +100,17 @@ class GenreController extends \Illuminate\Routing\Controller
 
         try{
             $url = route('genres.show', ['genre' => $genre]);
-            $totalMovies = $genre->movies->count();
-            if($totalMovies==0){
+            $ativeScreening = $genre->screenings()->where('date','>=',Carbon::today())->count();
+            if($ativeScreening==0){
                 $genre->delete();
                 $allertType='success';
                 $allertMsg = "Genre <a href='$url'><u>{$genre->name}</u></a> has been deleted successfully!";
             }else{
                 $allertType='warning';
                 $moviesStr = match(true){
-                    $totalMovies<=0=>"",
-                    $totalMovies==1=>"there is 1 movie enrolled in this genre",
-                    $totalMovies> 1 =>"there are $totalMovies movies enrolled in this genre"
+                    $ativeScreening<=0=>"",
+                    $ativeScreening==1=>"there is 1 screening active enrolled in this genre",
+                    $ativeScreening> 1 =>"there are $ativeScreening screenings actives enrolled in this genre"
                 };
                 $justification = $moviesStr;
                 $allertMsg="Genre <a href='$url'><u>{$genre->name}</u></a> could not be deleted because $justification.";

@@ -37,6 +37,19 @@
                     </h2>
                 </header>
                 @include('screenings.shared.fields', ['mode' => 'show'])
+                <div>
+                    <form method="POST" action="{{ route('screenings.processUrl', ['screening' => $screening]) }}">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="url" class="block text-sm font-medium text-gray-700 dark:text-gray-200">URL</label>
+                            <input id="url" name="url" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200" placeholder="Enter URL">
+                        </div>
+                        <x-button
+                            element="submit"
+                            text="Submit"
+                            type="primary"/>
+                    </form>
+                </div>
             </section>
         </div>
     </div>
