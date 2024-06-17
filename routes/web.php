@@ -24,10 +24,9 @@ use App\Http\Controllers\ChartController;
 use App\Http\Controllers\QrCodeController;
 
 //Teste estatisticas
-//Route::get('/statistics', [StatisticsController::class, 'index']);
-Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
-
-Route::get('/charts', [ChartController::class, 'showChart2']);
+Route::get('/charts', [ChartController::class, 'showChart'])->name('charts.showChart');
+Route::get('/charts2', [ChartController::class, 'showChart2'])->name('charts.showChart2');
+Route::get('/general', [ChartController::class, 'general'])->name('charts.general');
 
 
 

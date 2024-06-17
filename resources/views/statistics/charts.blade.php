@@ -24,9 +24,7 @@
             <div class="bg-red-200 text-red-800 px-4 py-2 rounded-lg shadow-md">
                 <span class="font-semibold">Least Tickets Sold{{ $minMonth->monthName }}:</span> {{ $minMonth->tickets_sold }} tickets sold
             </div>
-            <!--<div class="bg-red-200 text-red-800 px-4 py-2 rounded-lg shadow-md">
-                <span class="font-semibold">Average Tickets Sold{{ $averageTickets->averageTickets }}:</span> sold
-            </div>              METER AQUI A MEDIA  -->
+            
         </div>
     </div>
 
