@@ -3,7 +3,7 @@
 @section('header-title', 'Movies')
 
 @section('main')
-    <div class="flex flex-col">
-        @each('movies.shared.cardmoment', $movies, 'movie')
-    </div>
+<div class="flex flex-col">
+    @each('movies.shared.cardmoment', $movies, 'movie')
+</div>
 @endsection

@@ -26,6 +26,7 @@ class TheaterFormRequest extends FormRequest
         return [
             'name' => 'required|string|max:255|unique:theaters,name,'.($this->theater?$this->theater->id:null),
             'photo_filename' => 'sometimes|image|max:4096', // maxsize = 4Mb
+            'num_seats' => 'required|integer|min:1|max:260',
         ];
     }
 }

@@ -29,7 +29,7 @@ class TicketController extends \Illuminate\Routing\Controller
 
     public function showcase(Ticket $ticket, $qrcode_url){
         if($ticket->qrcode_url == $qrcode_url){
-            return view('tickets.showcase', compact('ticket'));
+            return view('tickets.showcase', ['ticket' =>$ticket]);
         }elseif($ticket->status != 'active'){
             return redirect()->route('tickets.showcase',['ticket' => $ticket])
                 ->with('alert-type', 'danger')
@@ -74,15 +74,25 @@ class TicketController extends \Illuminate\Routing\Controller
 
     public function validate(Ticket $ticket, Request $request)
     {
+        $qrcode_url = $request->input('qrcode_url');
         if($ticket->status == 'valid'){
             $ticket->status = 'invalid';
             $ticket->save();
-            $url = route('tickets.showcase',['ticket' => $ticket ]);
+            $url = route('tickets.showcase',['ticket' => $ticket ,'qrcode_url' => $ticket->qrcode_url]);
             $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> has been used successfully!";
-            return redirect()->route('tickets.show',['ticket' => $ticket ])
+            return redirect()->route('tickets.showcase',['ticket' => $ticket ,'qrcode_url' => $ticket->qrcode_url])
                 ->with('alert-type', 'success')
                 ->with('alert-msg', $htmlMessage);
-        }else{
+        }else if($ticket->status == 'invalid'){
+            $ticket->status = 'valid';
+            $ticket->save();
+            $url = route('tickets.showcase',['ticket' => $ticket,'qrcode_url' => $ticket->qrcode_url]);
+            $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> has been unused successfully!";
+            return redirect()->route('tickets.showcase',['ticket' => $ticket ,'qrcode_url' => $ticket->qrcode_url])
+                ->with('alert-type', 'success')
+                ->with('alert-msg', $htmlMessage);
+        }
+        else{
             $url = route('tickets.show', ['ticket' => $ticket]);
             $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> dont have this url, failed!";
             return redirect()->route('tickets.show',['ticket' => $ticket ])

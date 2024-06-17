@@ -52,6 +52,7 @@ class PDFController extends Controller
         $pdfPath=storage_path('app/public/receipts/' . $filename);
         $pdf->save($pdfPath);
         $pdf->stream('document_' . $purchase->id . '.pdf');
+        $pdf->download($pdfPath);
         // Retornando o nome do arquivo PDF
         return ['filename' => $filename, 'base64' => base64_encode(file_get_contents($pdfPath))];
     }

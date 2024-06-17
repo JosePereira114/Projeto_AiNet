@@ -5,8 +5,10 @@
 
 <div class="flex flex-wrap space-x-8">
     <div class="grow mt-6 space-y-4">
-        <x-field.input name="name" label="Name" :readonly="$readonly"
-                        value="{{ old('name', $theater->name) }}"/>
+    <x-field.input name="name" label="Name" :readonly="$readonly"
+    value="{{ old('name', $theater->name) }}"/>
+    <x-field.input name="num_seats" label="Num_seats" :readonly="$readonly"
+                        value="{{ old('num_seat', $theater->seats()->count()) }}"/>
     </div>
     <div class="pb-6">
         <x-field.image
