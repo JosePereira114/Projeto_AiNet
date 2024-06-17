@@ -165,7 +165,7 @@ class CartController extends Controller
                     $pdfPath = public_path('storage/receipts/' . $pdfData['filename']);
                 });
                 $request->session()->forget('cart');
-                $request->session()->put('pdf-Path', $pdfPath);
+                $request->session()->put('pdfPath', $pdfPath);
             }
         }
         if ($ignored == 0) {

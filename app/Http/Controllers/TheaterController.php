@@ -53,6 +53,17 @@ class TheaterController extends \Illuminate\Routing\Controller
     public function  store(TheaterFormRequest $request): RedirectResponse
     {
         $newTheater = Theater::create($request->validated());
+        $seatsPerRow = 10;
+        $rows = range('A', 'Z');
+        for($i = 0 ; $i < $request->num_seats; $i++){
+            $rowIndex = (int)($i / $seatsPerRow);
+            $seatNumber = $i % $seatsPerRow + 1;
+            $row = $rows[$rowIndex];
+            $newTheater->seats()->create([
+                    'row' => $row,
+                    'seat_number' => $seatNumber,
+                    'theater_id' => $newTheater->id]);
+        }
         if ($request->hasFile('photo_file')) {
             $path = $request->photo_file->store('public/theaters');
             $newTheater->photo_filename = basename($path);
