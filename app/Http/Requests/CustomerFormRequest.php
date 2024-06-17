@@ -16,6 +16,8 @@ class CustomerFormRequest extends FormRequest
         return true;
     }
 
+
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,13 +26,22 @@ class CustomerFormRequest extends FormRequest
     public function rules()
     {
         return [
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'nullable|string|min:3',
-        'nif' => 'nullable|integer|digits:9|unique:customers',
-        'payment_type' => 'required|string|in:VISA,PAYPAL,MBWAY',
-        'type' => 'string|in:C', // Adicione outras opções se necessário
-        'photo_filename' => 'nullable|string|max:255', // ou outros critérios de validação para foto
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'nullable|string|min:3',
+            'nif' => 'nullable|integer|digits:9|unique:customers',
+            'payment_type' => 'required|string|in:VISA,PAYPAL,MBWAY',
+            'type' => 'string|in:C',
+            'photo_filename' => 'nullable|string|max:255',
+            'payment_ref' => [
+                'nullable',
+                Rule::requiredIf(function () {
+                    return in_array($this->payment_type, ['VISA', 'MBWAY', 'PAYPAL']);
+                }),
+                Rule::when($this->payment_type === 'VISA', ['digits:16']),
+                Rule::when($this->payment_type === 'MBWAY', ['digits:9']),
+                Rule::when($this->payment_type === 'PAYPAL', ['email']),
+            ],
         ];
     }
 }

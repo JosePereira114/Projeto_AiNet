@@ -49,13 +49,18 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
+
+Route::post('/screenings/{screening}/process-url', [ScreeningController::class, 'processUrl'])->name('screenings.processUrl');
+
 /* ----- PUBLIC ROUTES ----- */
 Route::get('/', [MovieController::class, 'showMoment'])->name('home');
-Route::get('courses/showcase', [CourseController::class, 'showcase'])->name('courses.showcase');
 Route::get('tickets/showcase/{ticket}/{qrcode_url}', [TicketController::class, 'showcase'])->name('tickets.showcase');
 Route::get('tickets/{ticket}/qrcode', [TicketController::class, 'generateQRCode'])->name('tickets.qrcode');
-Route::get('tickets/{ticket}/access', [TicketController::class, 'access'])->name('tickets.access');
+Route::get('tickets/{ticket}/access', [TicketController::class, 'validate'])->name('tickets.access');
 Route::get('purchases/{screening}', [PurchaseController::class, 'buy'])->name('tickets.buy');
+Route::get('purchases/historic/{customer}', [PurchaseController::class, 'showHistoric'])->name('historic.index');
+Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases.index');
+Route::get('purchases/show/{purchase}', [PurchaseController::class, 'show']);
 Route::get('/movies/{movie}/selectscreening', [MovieController::class, 'showMomentScreenings'])->name('movies.showMomentScreenings');
 /* ----- Non-Verified users ----- */
 Route::middleware('auth')->group(function () {
@@ -71,7 +76,6 @@ Route::middleware('auth')->group(function () {
 //->name('genres.create')
 //->can('create', Genre::class);
 
-Route::post('genres', [GenreController::class, 'store'])->name('genres.store');
 
 
 /* ----- Verified users ----- */

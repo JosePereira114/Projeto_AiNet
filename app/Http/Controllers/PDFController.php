@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Purchase;
-use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PDFController extends Controller
 {
@@ -14,13 +16,19 @@ class PDFController extends Controller
         $screenings=[];
         $seats=[];
         $screeningIds = []; 
+        $qrCodes = [];
         foreach($tickets as $t){
             $screening = \App\Models\Screening::find($t->screening_id);
             if ($screening && !in_array($screening->id, $screeningIds)) {
                 $screenings[] = $screening;
-                $seats[] = \App\Models\Seat::find($t->seat_id);
-                $screeningIds[] = $screening->id; // Adicione o ID do screening ao array de IDs
+                $screeningIds[] = $screening->id;
+                
             }
+            
+            $seats[] = \App\Models\Seat::find($t->seat_id);
+            $url = route('tickets.showcase', ['ticket' => $t->id, 'qrcode_url' => $t->qrcode_url]);
+            $qrCode = QrCode::format('png')->size(300)->generate($url);
+            $qrCodes[$t->id] = base64_encode($qrCode);
         }
             $data = [
             'date' => $purchase->date, 
@@ -32,17 +40,20 @@ class PDFController extends Controller
             'email' => $purchase->customer_email, 
             'created_at' => $purchase->created_at,
             'updated_at' => $purchase->updated_at,
-            'id' => $purchase->id];  
+            'id' => $purchase->id,
+            'qrcodes' => $qrCodes,
+        ];  
         
         $pdf = PDF::loadView('pdf.document', $data); 
         // Definindo o nome do arquivo PDF, pode incluir mais dados como ID ou timestamp para diferenciar
         $filename = 'document_' . $purchase->id . '.pdf';
     
         // Salvando o PDF no storage (você pode ajustar o caminho conforme necessário)
-        $pdf->save(storage_path('app/public/receipts/' . $filename));
+        $pdfPath=storage_path('app/public/receipts/' . $filename);
+        $pdf->save($pdfPath);
         $pdf->stream('document_' . $purchase->id . '.pdf');
         // Retornando o nome do arquivo PDF
-        return $filename;
+        return ['filename' => $filename, 'base64' => base64_encode(file_get_contents($pdfPath))];
     }
 
 }

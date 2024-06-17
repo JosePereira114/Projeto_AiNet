@@ -1,1 +1,3 @@
-<div>{{$qrcode}}</div>
+<body>
+<div>{{$qrcode}}</d>
+</body>

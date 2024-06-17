@@ -29,7 +29,7 @@ class TicketController extends \Illuminate\Routing\Controller
 
     public function showcase(Ticket $ticket, $qrcode_url){
         if($ticket->qrcode_url == $qrcode_url){
-            return view('tickets.show', compact('ticket'));
+            return view('tickets.showcase', compact('ticket'));
         }elseif($ticket->status != 'active'){
             return redirect()->route('tickets.index')
                 ->with('alert-type', 'danger')
@@ -42,29 +42,6 @@ class TicketController extends \Illuminate\Routing\Controller
         }
     }
 
-    public function access(Ticket $ticket)
-    {
-        $ticket->status = 'invalid';
-        $ticket->save();
-        $url = route('tickets.show', ['ticket' => $ticket]);
-        $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> has been used successfully!";
-        return redirect()->route('tickets.index')
-            ->with('alert-type', 'success')
-            ->with('alert-msg', $htmlMessage);
-    }
-    public function generateQRCode(Ticket $ticket)
-    {
-        // Gerar o QR Code com base na URL específica do ticket
-        
-        $url = route('tickets.showcase', ['ticket' => $ticket->id, 'qrcode_url' => $ticket->qrcode_url]);
-        
-        $qrcode = QrCode::format('png')->size(300)->generate($url);
-        // Verificar se o conteúdo gerado é um PNG válido
-    if (substr($qrcode, 0, 4) !== "\x89PNG") {
-        abort(404, 'QR Code do Ticket Image not found or type unknown');
-    }
-        return response($qrcode)->header('Content-Type', 'image/png');
-    }
     /**
      * Show the form for creating a new resource.
      */
@@ -95,9 +72,24 @@ class TicketController extends \Illuminate\Routing\Controller
         return view('tickets.show', compact('ticket'));
     }
 
-    public function validate(Request $request)
+    public function validate(Ticket $ticket, Request $request)
     {
-        //validar o ticket
+        if($ticket->status == 'valid'){
+            $ticket->status = 'invalid';
+            $ticket->save();
+            $url = route('tickets.show', ['ticket' => $ticket]);
+            $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> has been used successfully!";
+            return redirect()->route('tickets.index')
+                ->with('alert-type', 'success')
+                ->with('alert-msg', $htmlMessage);
+        }else{
+            $url = route('tickets.show', ['ticket' => $ticket]);
+            $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> dont have this url, failed!";
+            return redirect()->route('tickets.index')
+                ->with('alert-type', 'danger')
+                ->with('alert-msg', $htmlMessage);
+        }
+        
     }
 
     /**
@@ -126,8 +118,8 @@ class TicketController extends \Illuminate\Routing\Controller
      */
     public function destroy(Ticket $ticket)
     {
-        try {
-            $url = route('tickets.show', ['ticket' => $ticket]);
+       try{
+        $url = route('tickets.show', ['ticket' => $ticket]);
             $totalPurchase = $ticket->purchase()->count();
             $totalSeat = $ticket->seat()->count();
             $totalScreening = $ticket->screening()->count();
@@ -143,7 +135,7 @@ class TicketController extends \Illuminate\Routing\Controller
                     ->with('alert-type', 'success')
                     ->with('alert-msg', $htmlMessage);
             }
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             return redirect()->route('tickets.index')
                 ->with('alert-type', 'danger')
                 ->with('alert-msg', 'Ticket cannot be deleted');
