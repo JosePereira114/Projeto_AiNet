@@ -31,12 +31,12 @@ class TicketController extends \Illuminate\Routing\Controller
         if($ticket->qrcode_url == $qrcode_url){
             return view('tickets.showcase', compact('ticket'));
         }elseif($ticket->status != 'active'){
-            return redirect()->route('tickets.index')
+            return redirect()->route('tickets.showcase',['ticket' => $ticket])
                 ->with('alert-type', 'danger')
                 ->with('alert-msg', 'Invalid tocken');
         }
-        else{
-            return redirect()->route('tickets.index')
+        else{  
+            return redirect()->route('tickets.showcase',['ticket' => $ticket])
                 ->with('alert-type', 'danger')
                 ->with('alert-msg', 'Invalid tocken');
         }
@@ -77,15 +77,15 @@ class TicketController extends \Illuminate\Routing\Controller
         if($ticket->status == 'valid'){
             $ticket->status = 'invalid';
             $ticket->save();
-            $url = route('tickets.show', ['ticket' => $ticket]);
+            $url = route('tickets.showcase',['ticket' => $ticket ]);
             $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> has been used successfully!";
-            return redirect()->route('tickets.index')
+            return redirect()->route('tickets.show',['ticket' => $ticket ])
                 ->with('alert-type', 'success')
                 ->with('alert-msg', $htmlMessage);
         }else{
             $url = route('tickets.show', ['ticket' => $ticket]);
             $htmlMessage = "Ticket <a href='$url'><u>{$ticket->name}</u></a> dont have this url, failed!";
-            return redirect()->route('tickets.index')
+            return redirect()->route('tickets.show',['ticket' => $ticket ])
                 ->with('alert-type', 'danger')
                 ->with('alert-msg', $htmlMessage);
         }

@@ -14,7 +14,12 @@
         @else
             <x-field.date name="date" label="Date" :readonly="$readonly" value="{{ old('date', $screening->date) }}" />
         @endif
+        @if ($readonly)
+            <x-field.input name="start_time" label="Start_time" :readonly="$readonly" :value="old('start_time', $screening->start_time)" />
+        @else
         <x-field.time name="start_time" label="Start_time" :readonly="$readonly" value="{{ old('start_time', $screening->start_time) }}"/>
+        @endif
+       
     </div>
     <div class="pb-6">
     </div>
