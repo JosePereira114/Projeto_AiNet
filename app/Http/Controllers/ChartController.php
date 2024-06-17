@@ -17,7 +17,7 @@ class ChartController extends Controller
         $genres_countmovies = Genre::withCount('movies')->get();
         
 
-        return view('statistics.general', compact('totalTickets', ));
+        return view('statistics.general', compact('totalTickets', 'totalScreenings', 'genres_countmovies'));
     }
 
     public function showChart()

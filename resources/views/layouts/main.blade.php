@@ -64,7 +64,7 @@
                         <!-- Menu Item: Others -->
                         @can('viewAny', App\Models\Chart::class)
                         <x-menus.submenu selectable="0" uniqueName="submenu_others" content="Statistics">
-                            <x-menus.submenu-item content="General" selectable="0" href="{{ route('charts.showChart') }}" />
+                            <x-menus.submenu-item content="General" selectable="0" href="{{ route('charts.general') }}" />
                             <x-menus.submenu-item content="Tickets" selectable="0" href="{{ route('charts.showChart') }}" />
                             <x-menus.submenu-item content="Genre" selectable="0" href="{{ route('charts.showChart2') }}" />
                         </x-menus.submenu>
