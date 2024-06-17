@@ -118,7 +118,7 @@ class ScreeningController extends \Illuminate\Routing\Controller
         
         $ticket = $screening->tickets()->where('qrcode_url',$url)->first();
         if($ticket){
-            $htmlMessage = "Ticket <a href='$urlreturn'><u>{$ticket->id}</u></a> has a invalid ticket!";
+            $htmlMessage = "Ticket <a href='$urlreturn'><u>{$ticket->id}</u></a> has a valid ticket!";
             return redirect()->route('tickets.showcase',['ticket' => $ticket,'qrcode_url' => $url])
                     ->with('alert-type', 'success')
                     ->with('alert-msg', $htmlMessage);
